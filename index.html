@@ -127,7 +127,14 @@
   .ph h2{font-size:22px;font-weight:700;margin:0}
   .placeholder{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--bg-soft);color:var(--gray);font-size:13px;margin-top:14px}
   .center{color:var(--gray-2);padding:50px 10px;font-size:14px;text-align:center}
-  @media(max-width:680px){.goals{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.main{padding:22px 18px 50px}}
+  .ltab{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  .ltab th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--gray);font-weight:700;padding:6px 4px;text-align:center}
+  .ltab th:first-child{text-align:left}
+  .ltab td{padding:7px 4px;border-top:1px solid var(--line-2);text-align:center}
+  .ltab td.lname{text-align:left;color:var(--ink)}
+  .ltab .cb{width:16px;height:16px;accent-color:var(--red);cursor:pointer}
+  .ltab .cb:disabled{cursor:default;opacity:.7}
+  @media(max-width:680px){.goals{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.main{padding:22px 18px 50px}.ltab{font-size:12px}}
 </style>
 </head>
 <body>
@@ -152,6 +159,8 @@ var API_URL = "https://script.google.com/macros/s/AKfycbwcrHynQ9VBrAIgMg8cvosITV
 /* ========= state ========= */
 var STATE=null, PIN="", EDIT=false, VIEW="home", editingMeta=false, editingSection=null;
 var LIVE=false, embeds={};   // embeds: { viewId: [ {title,url,type} ] }
+var COURSE_PID="p1";         // the Basic Course focus area hosts the species courses
+var courseCache={};          // slug -> { course, lessons }
 
 var DEMO = {
   config:{ siteTitle:"Team Exotics",
@@ -167,15 +176,20 @@ var DEMO = {
     {id:"p5",name:"Vitals Project",icon:"ti-heartbeat",description:"Species-specific vital-sign alerts for intake",status:"In progress",percent:65,note:"POTZ alert validated",order:5}
   ],
   sections:[
-    {projectId:"p1",name:"Chelonian (Turtle & Tortoise)",status:"In progress",order:1},
-    {projectId:"p1",name:"Avian (Birds)",status:"In progress",order:2},
-    {projectId:"p1",name:"Rabbit",status:"Done",order:3},
-    {projectId:"p1",name:"Guinea Pig",status:"In progress",order:4},
-    {projectId:"p1",name:"Ferret",status:"In progress",order:5},
-    {projectId:"p1",name:"Bearded Dragon",status:"Done",order:6},
-    {projectId:"p1",name:"Reptiles",status:"In progress",order:7},
     {projectId:"p3",name:"Algorithms",status:"On track",order:1},
     {projectId:"p3",name:"Reference Charts",status:"In progress",order:2}
+  ],
+  courses:[
+    {slug:"chelonian",name:"Chelonian",sub:"Turtle & Tortoise",status:"In progress",planned:false,order:1,N:31,doneHours:210,totalHours:310,pct:68},
+    {slug:"avian",name:"Avian",sub:"Birds",status:"In progress",planned:false,order:2,N:24,doneHours:150,totalHours:240,pct:63},
+    {slug:"guineapig",name:"Guinea Pig",sub:"",status:"MVP",planned:false,order:3,N:19,doneHours:95,totalHours:190,pct:50},
+    {slug:"ferret",name:"Ferret",sub:"",status:"MVP",planned:false,order:4,N:17,doneHours:80,totalHours:170,pct:47},
+    {slug:"rabbit",name:"Rabbit",sub:"",status:"MVP",planned:false,order:5,N:25,doneHours:170,totalHours:250,pct:68},
+    {slug:"beardeddragon",name:"Bearded Dragon",sub:"Reptile",status:"MVP",planned:false,order:6,N:19,doneHours:90,totalHours:190,pct:47},
+    {slug:"reptiles",name:"Reptiles",sub:"",status:"In progress",planned:false,order:7,N:18,doneHours:80,totalHours:180,pct:44},
+    {slug:"chicken",name:"Chicken / Duck",sub:"",status:"Planned",planned:true,order:8,N:0,doneHours:0,totalHours:0,pct:0},
+    {slug:"snake",name:"Snake",sub:"",status:"Planned",planned:true,order:9,N:0,doneHours:0,totalHours:0,pct:0},
+    {slug:"chinchilla",name:"Chinchilla",sub:"",status:"Planned",planned:true,order:10,N:0,doneHours:0,totalHours:0,pct:0}
   ]
 };
 
@@ -194,7 +208,7 @@ var ICONS=["ti-book","ti-school","ti-clipboard-check","ti-robot","ti-heartbeat",
 var NAV=[
   {id:"home",label:"Home",icon:"ti-home"},
   {id:"tracker",label:"Project Tracking",icon:"ti-layout-dashboard"},
-  {id:"basic",label:"Basic Course",icon:"ti-book"},
+  {id:"p1",label:"Basic Course",icon:"ti-book"},
   {id:"nerd",label:"NERD Education",icon:"ti-school",subs:[{id:"curated",label:"Curated Cases"},{id:"tmi",label:"TMI Curriculum"}]},
   {id:"resources",label:"Resources Updates",icon:"ti-clipboard-check",subs:[{id:"algorithms",label:"Algorithms"},{id:"charts",label:"Reference Charts"}]},
   {id:"ai",label:"Exotics AI",icon:"ti-robot"},
@@ -230,7 +244,10 @@ function afterLoad(){
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function m(s){return SM[s]||SM["In progress"];}
 function sectionsFor(id){return (STATE.sections||[]).filter(function(s){return s.projectId===id;});}
-function projPct(p){var s=sectionsFor(p.id);if(s.length){return Math.round(s.filter(function(x){return x.status==="Done";}).length/s.length*100);}return p.percent;}
+function coursesList(){return STATE.courses||[];}
+function coursesBuilt(){return coursesList().filter(function(c){return !c.planned;});}
+function basicRollup(){var cs=coursesBuilt();var done=0,tot=0;cs.forEach(function(c){done+=c.doneHours;tot+=c.totalHours;});return tot?Math.round(done/tot*100):0;}
+function projPct(p){if(p.id===COURSE_PID)return basicRollup();var s=sectionsFor(p.id);if(s.length){return Math.round(s.filter(function(x){return x.status==="Done";}).length/s.length*100);}return p.percent;}
 function projById(id){return (STATE.projects||[]).filter(function(p){return p.id===id;})[0];}
 function banner(msg,kind){var b=document.getElementById("mbanner");if(!b)return;b.className="banner "+kind;b.textContent=msg;b.classList.remove("hidden");if(kind==="ok")setTimeout(function(){b.classList.add("hidden");},2600);}
 
@@ -386,8 +403,9 @@ function cardView(p){
 
 /* ---- detail (focus-area project) ---- */
 function pageHTML(id){
+  if(id.indexOf("course:")===0) return courseShellHTML(id.slice(7));
   var p=projById(id);
-  if(p) return detailHTML(p);
+  if(p) return (p.id===COURSE_PID)?courseHubHTML(p):detailHTML(p);
   var m2=PAGE[id]; if(!m2) return '<div class="center">Not found.</div>';
   return '<div class="ph"><i class="ti '+m2[0]+'"></i><h2>'+esc(m2[1])+'</h2></div><p class="sub" style="display:flex;justify-content:space-between;align-items:center">'+esc(m2[2])+'<span>'+editButtonHTML()+'</span></p>'+
     '<div class="placeholder"><i class="ti ti-layout-grid"></i> Infographic content blocks for this section go here \u2014 short, visual, easy to read.</div>'+
@@ -411,38 +429,131 @@ function mountNew(){ /* handled in render via NEW form below */ }
 var _origRender=render;
 render=function(){
   _origRender();
-  var p=(VIEW!=="home"&&VIEW!=="tracker"&&VIEW!=="NEW")?projById(VIEW):null;
   var main=document.getElementById("main");
-  var back=main.querySelector("[data-back]"); if(back) back.addEventListener("click",function(){go("tracker");});
   if(VIEW==="NEW"){ renderNewForm(); return; }
-  if(p){
-    if(EDIT){ var em=main.querySelector('[data-edit]'); }
-    var metaBtnWrap=main.querySelector("#metaForm");
-    if(EDIT){
-      var editBtns=main.querySelectorAll('[data-edit]');
-    }
-    if(EDIT){
-      var mf=document.getElementById("metaForm");
-      var eb=document.createElement("div");
-      if(!editingMeta){
-        eb.innerHTML='<div class="actions"><button class="btn sm" id="editMeta"><i class="ti ti-pencil"></i>Edit details</button></div>';
-        mf.appendChild(eb);
-        document.getElementById("editMeta").addEventListener("click",function(){editingMeta=true;render();});
-      } else { renderMetaForm(p,mf); }
-    }
-    var list=document.getElementById("secList"), secs=sectionsFor(p.id);
-    if(list){
-      if(!secs.length && !EDIT) list.innerHTML='<div class="placeholder">No sections added yet.</div>';
-      secs.forEach(function(s){ list.appendChild(editingSection===s.name?sectionEdit(p,s):sectionRow(p,s)); });
-      var add=document.getElementById("secAdd");
-      if(EDIT){
-        if(editingSection==="NEW"){ add.appendChild(sectionEdit(p,{name:"",status:"Not started"})); }
-        else { var b=document.createElement("button"); b.className="btn sm"; b.style.marginTop="12px"; b.innerHTML='<i class="ti ti-plus"></i>Add section'; b.addEventListener("click",function(){editingSection="NEW";render();}); add.appendChild(b); }
-      }
-    }
-    bindEmbeds(p.id);
+  if(VIEW.indexOf("course:")===0){ mountCourseTracker(VIEW.slice(7)); return; }
+  var p=(VIEW!=="home"&&VIEW!=="tracker")?projById(VIEW):null;
+  if(!p) return;
+  var back=main.querySelector("[data-back]"); if(back) back.addEventListener("click",function(){go("tracker");});
+  if(p.id===COURSE_PID){ mountCourseHub(p); return; }
+  if(EDIT){
+    var mf=document.getElementById("metaForm");
+    var eb=document.createElement("div");
+    if(!editingMeta){
+      eb.innerHTML='<div class="actions"><button class="btn sm" id="editMeta"><i class="ti ti-pencil"></i>Edit details</button></div>';
+      mf.appendChild(eb);
+      document.getElementById("editMeta").addEventListener("click",function(){editingMeta=true;render();});
+    } else { renderMetaForm(p,mf); }
   }
+  var list=document.getElementById("secList"), secs=sectionsFor(p.id);
+  if(list){
+    if(!secs.length && !EDIT) list.innerHTML='<div class="placeholder">No sections added yet.</div>';
+    secs.forEach(function(s){ list.appendChild(editingSection===s.name?sectionEdit(p,s):sectionRow(p,s)); });
+    var add=document.getElementById("secAdd");
+    if(EDIT){
+      if(editingSection==="NEW"){ add.appendChild(sectionEdit(p,{name:"",status:"Not started"})); }
+      else { var b=document.createElement("button"); b.className="btn sm"; b.style.marginTop="12px"; b.innerHTML='<i class="ti ti-plus"></i>Add section'; b.addEventListener("click",function(){editingSection="NEW";render();}); add.appendChild(b); }
+    }
+  }
+  bindEmbeds(p.id);
 };
+
+/* ===== Basic Course hub + species course trackers ===== */
+var STAGES=[["html","HTML"],["review","Review"],["media","Media"],["final","Final"]];
+function courseDoneHours(l){return (l.html?5:0)+(l.review?1.5:0)+(l.media?2:0)+(l.final?1.5:0);}
+
+function courseHubHTML(p){
+  var pct=basicRollup();
+  var h='<div class="back" data-back="1"><i class="ti ti-arrow-left"></i>All focus areas</div>';
+  h+='<div class="dhead"><div class="dtitle"><i class="ti '+esc(p.icon)+'"></i>'+esc(p.name)+'</div><div class="bigpct">'+pct+'%<small>program build</small></div></div>';
+  h+='<p class="sub" style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span>'+esc(p.description)+'</span><span>'+editButtonHTML()+'</span></p>';
+  h+='<div class="h2">Species courses</div><p class="sub">Time-weighted build progress \u00b7 select a course to track lessons</p><div class="grid" id="cgrid"></div>';
+  if(EDIT) h+='<div style="margin-top:16px"><button class="btn sm" id="addCourse"><i class="ti ti-plus"></i>Add course</button></div>';
+  h+='<div class="h2">Embeds</div><p class="sub">Docs, sheets and decks for the program</p>'+embedBlockHTML(p.id);
+  return h;
+}
+function mountCourseHub(p){
+  var grid=document.getElementById("cgrid");
+  coursesList().forEach(function(c){ grid.appendChild(courseCard(c)); });
+  var ac=document.getElementById("addCourse"); if(ac) ac.addEventListener("click",addCourseFlow);
+  bindEmbeds(p.id);
+}
+function courseCard(c){
+  var mm=m(c.status), el=document.createElement("div"); el.className="card"+(c.planned?"":" click");
+  var body=c.planned?'<div class="card-body"><div class="desc">Planned \u2014 not built yet.</div></div>'
+    :'<div class="card-body"><div class="obar"><b style="width:'+c.pct+'%;background:'+mm.bar+'"></b></div><div class="meta"><span>'+c.N+' lessons \u00b7 '+c.doneHours+'/'+c.totalHours+' hrs</span><span>'+c.pct+'%</span></div></div>';
+  el.innerHTML='<div class="card-head"'+(c.planned?' style="background:#9a9a9a"':'')+'><span class="name">'+esc(c.name)+(c.sub?' <span style="font-weight:400;opacity:.9;font-size:12px">'+esc(c.sub)+'</span>':'')+'</span><span class="badge" style="color:'+(c.planned?'#6b6b6b':mm.fg)+'">'+esc(c.status)+'</span></div>'+body;
+  if(!c.planned) el.addEventListener("click",function(){go("course:"+c.slug);});
+  return el;
+}
+function addCourseFlow(){
+  var nm=prompt("New course name:"); if(!nm)return; var sub=prompt("Subtitle (optional):")||"";
+  apiPost({action:"addCourse",pin:PIN,name:nm,sub:sub,status:"In progress"}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;go("p1");banner("Course added.","ok");} else banner((res&&res.error)||"Not added.","err"); });
+}
+
+function courseShellHTML(slug){ return '<div class="back" data-back="1"><i class="ti ti-arrow-left"></i>Basic Course</div><div id="courseBody"><div class="center">Loading course\u2026</div></div>'; }
+function mountCourseTracker(slug){
+  var main=document.getElementById("main");
+  var back=main.querySelector("[data-back]"); if(back) back.addEventListener("click",function(){go("p1");});
+  if(courseCache[slug]){ renderCourseBody(slug); return; }
+  if(!LIVE){ document.getElementById("courseBody").innerHTML='<div class="placeholder">Connect the API to load lessons for this course.</div>'; return; }
+  apiGet("getCourse&course="+encodeURIComponent(slug)).then(function(res){ courseCache[slug]=res; renderCourseBody(slug); })
+    .catch(function(){ document.getElementById("courseBody").innerHTML='<div class="banner err" style="display:block">Couldn\u2019t load this course.</div>'; });
+}
+function renderCourseBody(slug){
+  var data=courseCache[slug], c=data.course, lessons=data.lessons||[];
+  var secOrder=[], bySec={};
+  lessons.forEach(function(l){ if(!bySec[l.section]){bySec[l.section]=[];secOrder.push(l.section);} bySec[l.section].push(l); });
+  var doneH=lessons.reduce(function(s,l){return s+courseDoneHours(l);},0), totH=lessons.length*10, pct=totH?Math.round(doneH/totH*100):0;
+  var h='<div class="dhead"><div class="dtitle"><i class="ti ti-book"></i>'+esc(c.name)+(c.sub?' <span style="font-size:13px;color:var(--gray-2);font-weight:400">'+esc(c.sub)+'</span>':'')+'</div><div class="bigpct">'+pct+'%<small>build</small></div></div>';
+  h+='<p class="sub" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:10px"><span>'+lessons.length+' lessons \u00b7 '+(Math.round(doneH*10)/10)+'/'+totH+' hrs \u00b7 HTML 5h \u00b7 Review 1.5h \u00b7 Media 2h \u00b7 Final 1.5h</span><span>'+editButtonHTML()+'</span></p>';
+  secOrder.forEach(function(sec){
+    var ls=bySec[sec], sd=ls.reduce(function(s,l){return s+courseDoneHours(l);},0), stot=ls.length*10, sp=stot?Math.round(sd/stot*100):0;
+    h+='<div class="h2" style="display:flex;justify-content:space-between"><span>'+esc(sec)+'</span><span style="font-size:13px;color:var(--gray);font-weight:400">'+sp+'%</span></div>';
+    h+='<table class="ltab"><thead><tr><th>Lesson</th>';
+    STAGES.forEach(function(s){h+='<th>'+s[1]+'</th>';}); h+='<th>V2</th>'+(EDIT?'<th></th>':'')+'</tr></thead><tbody>';
+    ls.forEach(function(l){
+      h+='<tr data-lesson="'+esc(l.lesson)+'"><td class="lname">'+esc(l.lesson)+'</td>';
+      STAGES.forEach(function(s){h+='<td><input type="checkbox" class="cb" data-k="'+s[0]+'"'+(l[s[0]]?" checked":"")+(EDIT?"":" disabled")+'></td>';});
+      h+='<td><input type="checkbox" class="cb" data-k="v2"'+(l.v2?" checked":"")+(EDIT?"":" disabled")+'></td>';
+      h+=(EDIT?'<td><button class="btn ghost sm l-del"><i class="ti ti-trash"></i></button></td>':'')+'</tr>';
+    });
+    h+='</tbody></table>';
+    if(EDIT) h+='<div style="margin:6px 0 0"><button class="btn ghost sm l-add" data-sec="'+esc(sec)+'"><i class="ti ti-plus"></i>Add lesson</button></div>';
+  });
+  if(!lessons.length) h+='<div class="placeholder">No lessons yet'+(EDIT?' \u2014 add a section below.':'.')+'</div>';
+  if(EDIT) h+='<div class="actions" style="margin-top:16px"><button class="btn sm c-addsec"><i class="ti ti-plus"></i>Add section</button><button class="btn danger sm c-del"><i class="ti ti-trash"></i>Delete course</button></div>';
+  document.getElementById("courseBody").innerHTML=h;
+  bindCourseBody(slug);
+}
+function bindCourseBody(slug){
+  var data=courseCache[slug], body=document.getElementById("courseBody");
+  body.querySelectorAll("[data-edit]").forEach(function(b){b.addEventListener("click",onEditToggle);});
+  body.querySelectorAll("tr[data-lesson]").forEach(function(tr){
+    var lname=tr.getAttribute("data-lesson");
+    var l=data.lessons.filter(function(x){return x.lesson===lname;})[0]; if(!l)return;
+    tr.querySelectorAll(".cb").forEach(function(cb){
+      cb.addEventListener("change",function(){
+        if(!EDIT){cb.checked=!cb.checked;return;}
+        var k=cb.getAttribute("data-k"), prev=l[k]; l[k]=cb.checked; renderCourseBody(slug);
+        apiPost({action:"saveLesson",pin:PIN,course:slug,section:l.section,oldLesson:l.lesson,lesson:l.lesson,html:l.html,review:l.review,media:l.media,final:l.final,v2:l.v2})
+          .then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;} else {l[k]=prev;renderCourseBody(slug);banner((res&&res.error)||"Not saved.","err");} })
+          .catch(function(){l[k]=prev;renderCourseBody(slug);banner("Network error.","err");});
+      });
+    });
+    var del=tr.querySelector(".l-del");
+    if(del) del.addEventListener("click",function(){ if(!confirm('Remove lesson "'+lname+'"?'))return;
+      apiPost({action:"deleteLesson",pin:PIN,course:slug,lesson:lname}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;refreshCourse(slug,"Removed.");} else banner((res&&res.error)||"Not removed.","err"); }); });
+  });
+  body.querySelectorAll(".l-add").forEach(function(b){ b.addEventListener("click",function(){ var sec=b.getAttribute("data-sec"); var nm=prompt("New lesson in \u201c"+sec+"\u201d:"); if(!nm)return; addLessonWrite(slug,sec,nm); }); });
+  var addsec=body.querySelector(".c-addsec");
+  if(addsec) addsec.addEventListener("click",function(){ var sec=prompt("New section name:"); if(!sec)return; var nm=prompt("First lesson in \u201c"+sec+"\u201d:"); if(!nm)return; addLessonWrite(slug,sec,nm); });
+  var cdel=body.querySelector(".c-del");
+  if(cdel) cdel.addEventListener("click",function(){ if(!confirm('Delete the entire "'+data.course.name+'" course and all its lessons?'))return;
+    apiPost({action:"deleteCourse",pin:PIN,slug:slug}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;delete courseCache[slug];go("p1");banner("Course deleted.","ok");} else banner((res&&res.error)||"Not deleted.","err"); }); });
+}
+function addLessonWrite(slug,sec,nm){ apiPost({action:"addLesson",pin:PIN,course:slug,section:sec,lesson:nm}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;refreshCourse(slug,"Lesson added.");} else banner((res&&res.error)||"Not added.","err"); }); }
+function refreshCourse(slug,msg){ apiGet("getCourse&course="+encodeURIComponent(slug)).then(function(r){courseCache[slug]=r;renderCourseBody(slug);if(msg)banner(msg,"ok");}); }
 
 function renderMetaForm(p,box){
   var secs=sectionsFor(p.id);
