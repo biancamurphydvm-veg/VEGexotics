@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEG · Team Exotics</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --red:#eb2429; --red-d:#c61d21; --ink:#1a1a1a; --gray:#6b6b6b; --gray-2:#9a9a9a;
+    --line:#e2e2e2; --line-2:#eee; --bg:#fff; --bg-soft:#fafafa;
+    --done:#4a7a36; --done-bg:#edf4e8;
+    --nav-w:250px; --radius:10px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:'Roboto',Arial,sans-serif;color:var(--ink)}
+  a{color:inherit}
+  .topbar{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:4px solid var(--red)}
+  .burger{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--ink)}
+  .burger:hover{background:var(--bg-soft)}
+  .logo{background:var(--red);color:#fff;font-weight:700;letter-spacing:1.5px;font-size:16px;padding:5px 11px;border-radius:6px}
+  .brand{font-size:15px;font-weight:500}
+  .spacer{flex:1}
+  .top-note{font-size:12px;color:var(--gray-2)}
+
+  .layout{display:flex;min-height:calc(100vh - 55px)}
+  .nav{width:var(--nav-w);flex:0 0 auto;border-right:1px solid var(--line-2);background:var(--bg-soft);overflow:hidden;transition:width .28s ease}
+  .layout.closed .nav{width:0;border-right:0}
+  .navinner{width:var(--nav-w);padding:14px 12px}
+  .navlabel{font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--gray-2);padding:6px 10px 4px}
+  .nrow{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:8px;font-size:14px;color:#333;cursor:pointer;position:relative;user-select:none}
+  .nrow:hover{background:#f0eded}
+  .nrow i.lead{color:var(--red);font-size:18px;width:18px;text-align:center}
+  .nrow .chev{margin-left:auto;color:var(--gray-2);font-size:16px;transition:transform .2s}
+  .nrow.active{background:#fbe9ea;color:var(--red-d);font-weight:500}
+  .nrow.active::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--red);border-radius:0 3px 3px 0}
+  .subs{overflow:hidden;max-height:0;transition:max-height .25s ease}
+  .subs.open{max-height:200px}
+  .srow{display:flex;align-items:center;gap:9px;padding:8px 11px 8px 42px;border-radius:8px;font-size:13px;color:var(--gray);cursor:pointer}
+  .srow:hover{background:#f0eded}
+  .srow.active{color:var(--red-d);font-weight:500}
+  .srow .dotd{width:5px;height:5px;border-radius:50%;background:#e59aa0}
+  .addrow{display:flex;align-items:center;gap:9px;padding:10px 11px;margin-top:8px;border-top:1px dashed var(--line);color:var(--gray-2);font-size:12.5px;cursor:default}
+
+  .main{flex:1;min-width:0;padding:28px 30px 60px;max-width:1180px}
+  .banner{border-radius:9px;padding:10px 14px;font-size:13px;margin-bottom:18px}
+  .banner.demo{background:#fff6e5;color:#8a5410;border:1px solid #f3dca6}
+  .banner.ok{background:var(--done-bg);color:var(--done)}
+  .banner.err{background:#fbe9ea;color:#b51e22}
+  .hidden{display:none}
+
+  .btn{font-family:inherit;font-size:14px;font-weight:500;padding:10px 17px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+  .btn:hover{background:var(--bg-soft)}
+  .btn.red{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.red:hover{background:var(--red-d)}
+  .btn.sm{padding:7px 12px;font-size:13px}
+  .btn.ghost{border-color:transparent;background:transparent;color:var(--gray)}
+  .btn.danger{border-color:#f3c9cb;color:#b51e22}
+  .btn.danger:hover{background:#fbe9ea}
+  .btn[disabled]{opacity:.5;cursor:default}
+
+  .eyebrow{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red)}
+  .mission{font-size:30px;font-weight:700;line-height:1.25;margin:10px 0 8px;max-width:640px}
+  .lede{font-size:15px;color:var(--gray);max-width:600px;line-height:1.6;margin:0 0 20px}
+  .h2{font-size:19px;font-weight:700;margin:30px 0 4px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+  .sub{font-size:13px;color:var(--gray-2);margin:0 0 14px}
+  .goals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .goal{border:1px solid var(--line);border-radius:12px;padding:14px 15px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .goal .d{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--red);background:#fbe9ea;border-radius:20px;padding:3px 10px}
+  .goal p{font-size:13px;color:#333;margin:10px 0 0;line-height:1.4}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+  .kpi{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi small{font-size:12px;color:var(--gray);font-weight:500;display:block}
+  .kpi b{font-size:26px;font-weight:700}
+  .kpi.accent b{color:var(--red)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-top:14px}
+  .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);background:#fff}
+  .card.click{cursor:pointer}
+  .card.click:hover{box-shadow:0 4px 14px rgba(0,0,0,.09)}
+  .card-head{background:var(--red);color:#fff;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .card-head .name{font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px}
+  .card-head .name i{font-size:19px}
+  .badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:#fff;white-space:nowrap}
+  .card-body{padding:15px 16px}
+  .desc{font-size:13px;color:var(--gray);margin:0 0 12px;min-height:18px}
+  .obar{height:8px;border-radius:5px;background:#eee;overflow:hidden;margin-bottom:6px}
+  .obar b{display:block;height:100%;border-radius:5px}
+  .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--gray)}
+
+  .segbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:14px 0 10px;background:#eee}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--gray)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px}
+
+  .back{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--gray);cursor:pointer;margin-bottom:10px}
+  .back:hover{color:var(--red-d)}
+  .dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .dtitle{font-size:24px;font-weight:700;display:flex;align-items:center;gap:11px}
+  .dtitle i{color:var(--red);font-size:26px}
+  .bigpct{font-size:38px;font-weight:700;line-height:1}
+  .bigpct small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-2);text-align:right;font-weight:500}
+  .srowd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line-2)}
+  .srowd:last-child{border-bottom:none}
+
+  .form label{display:block;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;margin:9px 0 3px}
+  .form input,.form select,.form textarea{width:100%;font-family:inherit;font-size:13px;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff}
+  .form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(235,36,41,.12)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pctwrap{display:flex;align-items:center;gap:10px}
+  .pctwrap input[type=range]{flex:1;accent-color:var(--red)}
+  .pctwrap b{min-width:40px;text-align:right;font-variant-numeric:tabular-nums}
+  .actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+
+  .embed-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .embed-head{background:var(--red);color:#fff;padding:9px 14px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px}
+  .embed-head .etype{margin-left:auto;font-size:11px;font-weight:400;opacity:.9}
+  .embed-frame{width:100%;border:0;display:block;background:#fff}
+  .embed-add{border:1.5px dashed var(--line);border-radius:12px;padding:14px;background:var(--bg-soft);margin:14px 0}
+  .embed-add .r{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  .embed-add input{flex:1;min-width:220px;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:7px}
+
+  .ph{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+  .ph i{color:var(--red);font-size:26px}
+  .ph h2{font-size:22px;font-weight:700;margin:0}
+  .placeholder{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--bg-soft);color:var(--gray);font-size:13px;margin-top:14px}
+  .center{color:var(--gray-2);padding:50px 10px;font-size:14px;text-align:center}
+  @media(max-width:680px){.goals{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.main{padding:22px 18px 50px}}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="burger" id="burger" aria-label="Toggle menu"><i class="ti ti-menu-2"></i></div>
+    <span class="logo">VEG</span>
+    <span class="brand" id="brandName">Team Exotics</span>
+    <span class="spacer"></span>
+    <span class="top-note" id="topNote"></span>
+  </div>
+  <div class="layout" id="layout">
+    <nav class="nav"><div class="navinner" id="navinner"></div></nav>
+    <div class="main" id="main"><div class="center">Loading…</div></div>
+  </div>
+
+<script>
+/* ========= CONFIG ========= */
+/* Paste your deployed Apps Script Web App URL (ends in /exec) between the quotes.
+   Leave blank to preview the site with built-in demo data (editing disabled). */
+var API_URL = "https://script.google.com/macros/s/AKfycbwcrHynQ9VBrAIgMg8cvosITVwyXxwtL1dVIeuTOtiWkA7Dt3-UKlepue96OjECXMjw/exec";
+
+/* ========= state ========= */
+var STATE=null, PIN="", EDIT=false, VIEW="home", editingMeta=false, editingSection=null;
+var LIVE=false, embeds={};   // embeds: { viewId: [ {title,url,type} ] }
+
+var DEMO = {
+  config:{ siteTitle:"Team Exotics",
+    mission:"Training the world\u2019s emergency veterinarians in exotic animal medicine.",
+    missionSub:"Empowering every VEGgie to deliver a higher level of care for underserved exotic patients.",
+    updatedNote:"Demo data \u2014 connect the API to go live",
+    milestones:[{label:"30 Day",text:"Guidelines + algorithms live"},{label:"60 Day",text:"Courses + formularies built"},{label:"90 Day",text:"AI tools + vitals piloted"},{label:"120 Day",text:"Everything centralized here"}] },
+  projects:[
+    {id:"p1",name:"Basic Course",icon:"ti-book",description:"Species ER courses \u2014 Chelonian, avian, rabbit, and more",status:"In progress",percent:60,note:"Rolls up from species trackers",order:1},
+    {id:"p2",name:"NERD Education",icon:"ti-school",description:"Curated cases and the TMI 2027 curriculum",status:"In progress",percent:55,note:"Curated cases building",order:2},
+    {id:"p3",name:"Resources Updates",icon:"ti-clipboard-check",description:"Algorithms and reference charts",status:"On track",percent:68,note:"10 live, 2 in draft",order:3},
+    {id:"p4",name:"Exotics AI",icon:"ti-robot",description:"Exotics GPT and AI teaching tools",status:"Building",percent:40,note:"Error-testing phase",order:4},
+    {id:"p5",name:"Vitals Project",icon:"ti-heartbeat",description:"Species-specific vital-sign alerts for intake",status:"In progress",percent:65,note:"POTZ alert validated",order:5}
+  ],
+  sections:[
+    {projectId:"p1",name:"Chelonian (Turtle & Tortoise)",status:"In progress",order:1},
+    {projectId:"p1",name:"Avian (Birds)",status:"In progress",order:2},
+    {projectId:"p1",name:"Rabbit",status:"Done",order:3},
+    {projectId:"p1",name:"Guinea Pig",status:"In progress",order:4},
+    {projectId:"p1",name:"Ferret",status:"In progress",order:5},
+    {projectId:"p1",name:"Bearded Dragon",status:"Done",order:6},
+    {projectId:"p1",name:"Reptiles",status:"In progress",order:7},
+    {projectId:"p3",name:"Algorithms",status:"On track",order:1},
+    {projectId:"p3",name:"Reference Charts",status:"In progress",order:2}
+  ]
+};
+
+/* ========= status palette (VEG) ========= */
+var SM={
+  "Done":{bg:"#edf4e8",fg:"#4a7a36",bar:"#4a7a36"},
+  "On track":{bg:"#e8f0f8",fg:"#235a92",bar:"#2b6cb0"},
+  "In progress":{bg:"#fbf0dd",fg:"#8a5410",bar:"#d98014"},
+  "Building":{bg:"#efe9fb",fg:"#5a34a0",bar:"#7a4ad6"},
+  "At risk":{bg:"#fbe9ea",fg:"#b51e22",bar:"#eb2429"},
+  "Not started":{bg:"#f0f0f0",fg:"#5f5f5f",bar:"#9a9a9a"}
+};
+var STATUSES=["Done","On track","In progress","Building","At risk","Not started"];
+var ICONS=["ti-book","ti-school","ti-clipboard-check","ti-robot","ti-heartbeat","ti-cards","ti-calendar","ti-sitemap","ti-table","ti-folder","ti-microscope","ti-vaccine"];
+
+var NAV=[
+  {id:"home",label:"Home",icon:"ti-home"},
+  {id:"tracker",label:"Project Tracking",icon:"ti-layout-dashboard"},
+  {id:"basic",label:"Basic Course",icon:"ti-book"},
+  {id:"nerd",label:"NERD Education",icon:"ti-school",subs:[{id:"curated",label:"Curated Cases"},{id:"tmi",label:"TMI Curriculum"}]},
+  {id:"resources",label:"Resources Updates",icon:"ti-clipboard-check",subs:[{id:"algorithms",label:"Algorithms"},{id:"charts",label:"Reference Charts"}]},
+  {id:"ai",label:"Exotics AI",icon:"ti-robot"},
+  {id:"vitals",label:"Vitals Project",icon:"ti-heartbeat"}
+];
+var PAGE={
+  basic:["ti-book","Basic Course","The species ER program \u2014 each course tracked section by section."],
+  curated:["ti-cards","Curated Cases","Teaching cases the group works through together."],
+  tmi:["ti-calendar","TMI Curriculum","The 2027 hands-on training schedule and content."],
+  algorithms:["ti-sitemap","Algorithms","Decision guides \u2014 sick rabbit, obstruction, and more."],
+  charts:["ti-table","Reference Charts","Formularies and quick-reference dosing charts."],
+  ai:["ti-robot","Exotics AI","The Exotics GPT and related AI teaching tools."],
+  vitals:["ti-heartbeat","Vitals Project","Species-specific vital-sign alerts for intake."]
+};
+var navOpen={};
+
+/* ========= API ========= */
+function apiGet(action){ return fetch(API_URL+"?action="+action).then(function(r){return r.json();}); }
+function apiPost(payload){ return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(function(r){return r.json();}); }
+
+function boot(){
+  if(!API_URL){ STATE=DEMO; LIVE=false; afterLoad(); return; }
+  apiGet("getState").then(function(s){ STATE=s; LIVE=true; afterLoad(); })
+    .catch(function(){ STATE=DEMO; LIVE=false; afterLoad(); });
+}
+function afterLoad(){
+  document.getElementById("brandName").textContent=STATE.config.siteTitle;
+  document.getElementById("topNote").textContent=STATE.config.updatedNote;
+  render();
+}
+
+/* ========= helpers ========= */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function m(s){return SM[s]||SM["In progress"];}
+function sectionsFor(id){return (STATE.sections||[]).filter(function(s){return s.projectId===id;});}
+function projPct(p){var s=sectionsFor(p.id);if(s.length){return Math.round(s.filter(function(x){return x.status==="Done";}).length/s.length*100);}return p.percent;}
+function projById(id){return (STATE.projects||[]).filter(function(p){return p.id===id;})[0];}
+function banner(msg,kind){var b=document.getElementById("mbanner");if(!b)return;b.className="banner "+kind;b.textContent=msg;b.classList.remove("hidden");if(kind==="ok")setTimeout(function(){b.classList.add("hidden");},2600);}
+
+/* ========= google embed URL detection ========= */
+function toEmbedUrl(raw){
+  var u=(raw||"").trim(); if(!u) return null;
+  var id=function(re){var m=u.match(re);return m?m[1]:null;};
+  var d=id(/docs\.google\.com\/document\/d\/([a-zA-Z0-9_-]+)/);
+  if(d) return {type:"Doc",url:"https://docs.google.com/document/d/"+d+"/preview"};
+  var s=id(/docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+  if(s){var g=id(/[#&?]gid=([0-9]+)/);return {type:"Sheet",url:"https://docs.google.com/spreadsheets/d/"+s+"/preview"+(g?"#gid="+g:"")};}
+  var p=id(/docs\.google\.com\/presentation\/d\/([a-zA-Z0-9_-]+)/);
+  if(p) return {type:"Slides",url:"https://docs.google.com/presentation/d/"+p+"/embed"};
+  var fm=id(/docs\.google\.com\/forms\/d\/(?:e\/)?([a-zA-Z0-9_-]+)/);
+  if(fm) return {type:"Form",url:"https://docs.google.com/forms/d/e/"+fm+"/viewform?embedded=true"};
+  var f=id(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(f) return {type:"Drive",url:"https://drive.google.com/file/d/"+f+"/preview"};
+  var op=id(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if(op && /drive\.google\.com/.test(u)) return {type:"Drive",url:"https://drive.google.com/file/d/"+op+"/preview"};
+  if(/^https?:\/\//.test(u)) return {type:"Web",url:u};
+  return null;
+}
+function embedIcon(t){return {Doc:"ti-file-text",Sheet:"ti-table",Slides:"ti-presentation",Form:"ti-forms",Drive:"ti-brand-google-drive",Web:"ti-world"}[t]||"ti-link";}
+function embedHeight(t){return t==="Slides"?420:t==="Web"?520:600;}
+
+function embedCardHTML(e,idx,editable){
+  return '<div class="embed-card"><div class="embed-head"><i class="ti '+embedIcon(e.type)+'"></i>'+esc(e.title||e.type)+
+    '<span class="etype">'+esc(e.type)+(editable?'</span><i class="ti ti-x" style="cursor:pointer;margin-left:10px" data-rm="'+idx+'" title="Remove"></i>':'</span>')+
+    '</div><iframe class="embed-frame" src="'+esc(e.url)+'" height="'+embedHeight(e.type)+'" allow="fullscreen" loading="lazy"></iframe></div>';
+}
+function embedBlockHTML(viewId){
+  var list=embeds[viewId]||[];
+  var h=list.map(function(e,i){return embedCardHTML(e,i,EDIT);}).join("");
+  if(EDIT){
+    h+='<div class="embed-add"><div style="font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray)">Embed a Google doc, sheet, deck, form or drive file</div>'+
+       '<div class="r"><input id="emTitle" placeholder="Label (optional)"><input id="emUrl" placeholder="Paste a Google Docs / Sheets / Slides / Drive link…" style="flex:2">'+
+       '<button class="btn red sm" id="emAdd"><i class="ti ti-plus"></i>Embed</button></div>'+
+       '<div style="font-size:11px;color:var(--gray-2);margin-top:8px">Tip: set the file to \u201cAnyone with the link \u2192 Viewer\u201d (or Publish to web) so everyone can see it.</div></div>';
+  }
+  return h;
+}
+function bindEmbeds(viewId){
+  var main=document.getElementById("main");
+  main.querySelectorAll("[data-rm]").forEach(function(x){x.addEventListener("click",function(){ (embeds[viewId]||[]).splice(+x.getAttribute("data-rm"),1); render(); });});
+  var add=document.getElementById("emAdd");
+  if(add) add.addEventListener("click",function(){
+    var url=document.getElementById("emUrl").value, title=document.getElementById("emTitle").value.trim();
+    var d=toEmbedUrl(url); if(!d){ banner("That doesn\u2019t look like a Google link I can embed.","err"); return; }
+    (embeds[viewId]=embeds[viewId]||[]).push({title:title||d.type,url:d.url,type:d.type}); render();
+  });
+}
+
+/* ========= nav ========= */
+function navHTML(){
+  var h='<div class="navlabel">Menu</div>';
+  NAV.forEach(function(n){
+    h+='<div class="nrow'+(VIEW===n.id?" active":"")+'" data-id="'+n.id+'"'+(n.subs?' data-acc="1"':'')+'><i class="ti '+n.icon+' lead"></i>'+n.label+
+       (n.subs?'<i class="ti ti-chevron-down chev" style="transform:rotate('+(navOpen[n.id]?"180":"0")+'deg)"></i>':'')+'</div>';
+    if(n.subs){h+='<div class="subs'+(navOpen[n.id]?" open":"")+'">';
+      n.subs.forEach(function(s){h+='<div class="srow'+(VIEW===s.id?" active":"")+'" data-id="'+s.id+'"><span class="dotd"></span>'+s.label+'</div>';});
+      h+='</div>';}
+  });
+  h+='<div class="addrow"><i class="ti ti-plus"></i>Add sections in edit mode</div>';
+  return h;
+}
+function bindNav(){
+  document.querySelectorAll("#navinner .nrow").forEach(function(r){r.addEventListener("click",function(){var id=r.getAttribute("data-id");if(r.getAttribute("data-acc"))navOpen[id]=!navOpen[id];go(id);});});
+  document.querySelectorAll("#navinner .srow").forEach(function(r){r.addEventListener("click",function(){go(r.getAttribute("data-id"));});});
+}
+function go(id){VIEW=id;editingMeta=false;editingSection=null;render();}
+
+/* ========= render ========= */
+function render(){
+  document.getElementById("navinner").innerHTML=navHTML(); bindNav();
+  var main=document.getElementById("main"), h="";
+  h+='<div class="banner hidden" id="mbanner"></div>';
+  if(!LIVE) h+='<div class="banner demo">Preview mode with demo data. Paste your Apps Script URL into <b>API_URL</b> at the top of this file to go live and enable editing.</div>';
+  if(VIEW==="home") h+=homeHTML();
+  else if(VIEW==="tracker") h+=trackerHTML();
+  else if(VIEW==="NEW") h+="";
+  else h+=pageHTML(VIEW);
+  main.innerHTML=h;
+  if(VIEW==="tracker"){ mountTracker(); }
+  else if(VIEW==="NEW"){ mountNew(); }
+  else if(PAGE[VIEW]){ bindEmbeds(VIEW); }
+  main.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){go(b.getAttribute("data-go"));});});
+  main.querySelectorAll("[data-edit]").forEach(function(b){b.addEventListener("click",onEditToggle);});
+}
+
+function editButtonHTML(){
+  return EDIT
+    ? '<button class="btn sm" data-edit="1"><i class="ti ti-check"></i>Done editing</button>'
+    : '<button class="btn sm" data-edit="1"><i class="ti ti-pencil"></i>Team edit</button>';
+}
+function onEditToggle(){
+  if(EDIT){EDIT=false;editingMeta=false;editingSection=null;render();return;}
+  if(!LIVE){ alert("Connect the API (set API_URL) to enable team editing."); return; }
+  var pin=window.prompt("Enter the team PIN to edit:"); if(pin===null) return;
+  apiGet("checkPin&pin="+encodeURIComponent(pin)).then(function(r){
+    if(r&&r.ok){PIN=pin;EDIT=true;render();} else banner("That PIN didn\u2019t match.","err");
+  });
+}
+
+/* ---- home ---- */
+function homeHTML(){
+  var c=STATE.config;
+  var g=(c.milestones||[]).map(function(x){return '<div class="goal"><span class="d">'+esc(x.label).toUpperCase()+'</span><p>'+esc(x.text)+'</p></div>';}).join("");
+  return '<div class="eyebrow">Our mission</div><div class="mission">'+esc(c.mission)+'</div>'+
+    '<p class="lede">'+esc(c.missionSub)+'</p>'+
+    '<button class="btn red" data-go="tracker">Access project tracking <i class="ti ti-arrow-right"></i></button>'+
+    '<div class="h2">Where we\u2019re headed</div><p class="sub">Our 30 / 60 / 90 / 120-day goals</p><div class="goals">'+g+'</div>'+
+    '<div class="h2">Embeds</div><p class="sub">Live Google docs, sheets and decks</p>'+embedBlockHTML("home");
+}
+
+/* ---- tracker ---- */
+function trackerHTML(){
+  if(VIEW!=="tracker") return "";
+  var ps=STATE.projects, total=ps.length;
+  var avg=total?Math.round(ps.reduce(function(s,p){return s+projPct(p);},0)/total):0;
+  var onTrack=ps.filter(function(p){return p.status==="Done"||p.status==="On track";}).length;
+  var risk=ps.filter(function(p){return p.status==="At risk";}).length;
+  var h='<div class="ph"><i class="ti ti-layout-dashboard"></i><h2>Project Tracking</h2></div><p class="sub" style="display:flex;justify-content:space-between;align-items:center">Live focus areas, section progress, and completion data <span>'+editButtonHTML()+'</span></p>';
+  h+='<div class="kpis"><div class="kpi"><small>Focus areas</small><b>'+total+'</b></div><div class="kpi accent"><small>Overall completion</small><b>'+avg+'%</b></div><div class="kpi"><small>On track</small><b>'+onTrack+'</b></div><div class="kpi"><small>Needs attention</small><b>'+risk+'</b></div></div>';
+  var st=segStats(ps);
+  h+='<div class="segbar">'+st.seg+'</div><div class="legend">'+st.legend+'</div>';
+  h+='<div class="grid" id="grid"></div>';
+  if(EDIT) h+='<div style="margin-top:16px"><button class="btn sm" id="addProj"><i class="ti ti-plus"></i>Add focus area</button></div>';
+  return h;
+}
+function segStats(items){
+  var total=items.length||1,counts={};STATUSES.forEach(function(s){counts[s]=0;});
+  items.forEach(function(x){counts[x.status]=(counts[x.status]||0)+1;});
+  var seg="",leg="";
+  STATUSES.forEach(function(s){if(counts[s]>0){seg+='<div style="width:'+(counts[s]/total*100)+'%;background:'+m(s).bar+'"></div>';leg+='<span><span class="dot" style="background:'+m(s).bar+'"></span>'+esc(s)+' \u00b7 '+counts[s]+'</span>';}});
+  return {seg:seg,legend:leg};
+}
+function mountTracker(){
+  var grid=document.getElementById("grid"); if(!grid) return;
+  STATE.projects.forEach(function(p){grid.appendChild(cardView(p));});
+  var ap=document.getElementById("addProj"); if(ap) ap.addEventListener("click",function(){VIEW="NEW";render();});
+}
+function cardView(p){
+  var secs=sectionsFor(p.id),pct=projPct(p),mm=m(p.status);
+  var right=secs.length?(secs.filter(function(s){return s.status==="Done";}).length+"/"+secs.length+" sections"):esc(p.note);
+  var el=document.createElement("div"); el.className="card click";
+  el.innerHTML='<div class="card-head"><span class="name"><i class="ti '+esc(p.icon)+'"></i>'+esc(p.name)+'</span><span class="badge" style="color:'+mm.fg+'">'+esc(p.status)+'</span></div>'+
+    '<div class="card-body"><div class="desc">'+esc(p.description)+'</div>'+
+    '<div class="obar"><b style="width:'+pct+'%;background:'+mm.bar+'"></b></div>'+
+    '<div class="meta"><span>'+right+'</span><span>'+pct+'%</span></div></div>';
+  el.addEventListener("click",function(){go(p.id);});
+  return el;
+}
+
+/* ---- detail (focus-area project) ---- */
+function pageHTML(id){
+  var p=projById(id);
+  if(p) return detailHTML(p);
+  var m2=PAGE[id]; if(!m2) return '<div class="center">Not found.</div>';
+  return '<div class="ph"><i class="ti '+m2[0]+'"></i><h2>'+esc(m2[1])+'</h2></div><p class="sub" style="display:flex;justify-content:space-between;align-items:center">'+esc(m2[2])+'<span>'+editButtonHTML()+'</span></p>'+
+    '<div class="placeholder"><i class="ti ti-layout-grid"></i> Infographic content blocks for this section go here \u2014 short, visual, easy to read.</div>'+
+    '<div class="h2">Embeds</div><p class="sub">Add related Google docs, sheets or decks</p>'+embedBlockHTML(id);
+}
+function detailHTML(p){
+  var secs=sectionsFor(p.id),pct=projPct(p),mm=m(p.status),st=segStats(secs);
+  var h='<div class="back" data-back="1"><i class="ti ti-arrow-left"></i>All focus areas</div>';
+  h+='<div class="dhead"><div class="dtitle"><i class="ti '+esc(p.icon)+'"></i>'+esc(p.name)+'</div><div class="bigpct">'+pct+'%<small>'+(secs.length?"from sections":"completion")+'</small></div></div>';
+  h+='<p class="sub" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><span><span class="badge" style="background:'+mm.bg+';color:'+mm.fg+'">'+esc(p.status)+'</span> &nbsp;'+esc(p.description)+(p.note?" \u00b7 "+esc(p.note):"")+'</span><span>'+editButtonHTML()+'</span></p>';
+  h+='<div id="metaForm"></div>';
+  h+='<div class="h2">Sections</div><p class="sub">'+(secs.length?st.legend?st.legend:"":"No sections yet")+'</p>';
+  if(secs.length) h+='<div class="segbar">'+st.seg+'</div>';
+  h+='<div id="secList"></div><div id="secAdd"></div>';
+  h+='<div class="h2">Embeds</div><p class="sub">Docs, sheets and decks for this focus area</p>'+embedBlockHTML(p.id);
+  return h;
+}
+function mountNew(){ /* handled in render via NEW form below */ }
+
+/* detail mount: bind back, meta edit, sections, embeds */
+var _origRender=render;
+render=function(){
+  _origRender();
+  var p=(VIEW!=="home"&&VIEW!=="tracker"&&VIEW!=="NEW")?projById(VIEW):null;
+  var main=document.getElementById("main");
+  var back=main.querySelector("[data-back]"); if(back) back.addEventListener("click",function(){go("tracker");});
+  if(VIEW==="NEW"){ renderNewForm(); return; }
+  if(p){
+    if(EDIT){ var em=main.querySelector('[data-edit]'); }
+    var metaBtnWrap=main.querySelector("#metaForm");
+    if(EDIT){
+      var editBtns=main.querySelectorAll('[data-edit]');
+    }
+    if(EDIT){
+      var mf=document.getElementById("metaForm");
+      var eb=document.createElement("div");
+      if(!editingMeta){
+        eb.innerHTML='<div class="actions"><button class="btn sm" id="editMeta"><i class="ti ti-pencil"></i>Edit details</button></div>';
+        mf.appendChild(eb);
+        document.getElementById("editMeta").addEventListener("click",function(){editingMeta=true;render();});
+      } else { renderMetaForm(p,mf); }
+    }
+    var list=document.getElementById("secList"), secs=sectionsFor(p.id);
+    if(list){
+      if(!secs.length && !EDIT) list.innerHTML='<div class="placeholder">No sections added yet.</div>';
+      secs.forEach(function(s){ list.appendChild(editingSection===s.name?sectionEdit(p,s):sectionRow(p,s)); });
+      var add=document.getElementById("secAdd");
+      if(EDIT){
+        if(editingSection==="NEW"){ add.appendChild(sectionEdit(p,{name:"",status:"Not started"})); }
+        else { var b=document.createElement("button"); b.className="btn sm"; b.style.marginTop="12px"; b.innerHTML='<i class="ti ti-plus"></i>Add section'; b.addEventListener("click",function(){editingSection="NEW";render();}); add.appendChild(b); }
+      }
+    }
+    bindEmbeds(p.id);
+  }
+};
+
+function renderMetaForm(p,box){
+  var secs=sectionsFor(p.id);
+  var opts=STATUSES.map(function(s){return '<option'+(s===p.status?" selected":"")+'>'+s+'</option>';}).join("");
+  var dl=ICONS.map(function(i){return '<option value="'+i+'">';}).join("");
+  var el=document.createElement("div"); el.className="form"; el.style.marginTop="10px";
+  el.innerHTML='<label>Name</label><input class="f-name" maxlength="80" value="'+esc(p.name)+'">'+
+    '<label>Description</label><input class="f-desc" maxlength="140" value="'+esc(p.description)+'">'+
+    '<div class="row2"><div><label>Status</label><select class="f-status">'+opts+'</select></div><div><label>Icon</label><input class="f-icon" list="il" value="'+esc(p.icon)+'"><datalist id="il">'+dl+'</datalist></div></div>'+
+    (secs.length?'<p class="sub" style="margin:8px 0 0">Completion is calculated from sections.</p>':'<label>Completion</label><div class="pctwrap"><input type="range" min="0" max="100" step="1" class="f-pct" value="'+p.percent+'"><b class="f-po">'+p.percent+'%</b></div>')+
+    '<label>Note</label><input class="f-note" maxlength="140" value="'+esc(p.note)+'">'+
+    '<div class="actions"><button class="btn red sm f-save"><i class="ti ti-check"></i>Save</button><button class="btn sm f-cancel">Cancel</button><button class="btn danger sm f-del"><i class="ti ti-trash"></i>Delete</button></div>';
+  box.innerHTML=""; box.appendChild(el);
+  var rg=el.querySelector(".f-pct"); if(rg) rg.addEventListener("input",function(){el.querySelector(".f-po").textContent=rg.value+"%";});
+  el.querySelector(".f-cancel").addEventListener("click",function(){editingMeta=false;render();});
+  el.querySelector(".f-save").addEventListener("click",function(){
+    var payload={action:"saveProject",pin:PIN,project:{id:p.id,name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:rg?+rg.value:p.percent,note:el.querySelector(".f-note").value.trim(),order:p.order}};
+    write(payload,"Saved.");
+  });
+  el.querySelector(".f-del").addEventListener("click",function(){ if(confirm('Remove "'+p.name+'" and its sections?')) write({action:"deleteProject",pin:PIN,id:p.id},"Removed.",true); });
+}
+function sectionRow(p,s){
+  var mm=m(s.status),el=document.createElement("div"); el.className="srowd";
+  el.innerHTML='<span>'+esc(s.name)+'</span><span style="display:flex;align-items:center;gap:8px"><span class="badge" style="background:'+mm.bg+';color:'+mm.fg+'">'+esc(s.status)+'</span>'+(EDIT?'<button class="btn ghost sm s-edit"><i class="ti ti-pencil"></i></button>':'')+'</span>';
+  if(EDIT) el.querySelector(".s-edit").addEventListener("click",function(){editingSection=s.name;render();});
+  return el;
+}
+function sectionEdit(p,s){
+  var isNew=!s.name, opts=STATUSES.map(function(x){return '<option'+(x===s.status?" selected":"")+'>'+x+'</option>';}).join("");
+  var el=document.createElement("div"); el.className="srowd form"; el.style.alignItems="flex-end";
+  el.innerHTML='<div style="flex:1"><label>Section</label><input class="s-name" maxlength="80" value="'+esc(s.name)+'" placeholder="e.g. Snake"></div><div style="width:150px"><label>Status</label><select class="s-status">'+opts+'</select></div><div style="display:flex;gap:6px"><button class="btn red sm s-save"><i class="ti ti-check"></i></button><button class="btn sm s-cancel">Cancel</button>'+(isNew?"":'<button class="btn danger sm s-del"><i class="ti ti-trash"></i></button>')+'</div>';
+  el.querySelector(".s-cancel").addEventListener("click",function(){editingSection=null;render();});
+  el.querySelector(".s-save").addEventListener("click",function(){
+    var name=el.querySelector(".s-name").value.trim()||"Untitled",status=el.querySelector(".s-status").value;
+    write(isNew?{action:"addSection",pin:PIN,projectId:p.id,name:name,status:status}:{action:"saveSection",pin:PIN,projectId:p.id,oldName:s.name,name:name,status:status}, isNew?"Section added.":"Saved.");
+  });
+  if(!isNew) el.querySelector(".s-del").addEventListener("click",function(){ if(confirm('Remove section "'+s.name+'"?')) write({action:"deleteSection",pin:PIN,projectId:p.id,name:s.name},"Removed."); });
+  return el;
+}
+function renderNewForm(){
+  var main=document.getElementById("main");
+  var opts=STATUSES.map(function(s){return '<option'+(s==="In progress"?" selected":"")+'>'+s+'</option>';}).join("");
+  var dl=ICONS.map(function(i){return '<option value="'+i+'">';}).join("");
+  main.innerHTML='<div class="banner hidden" id="mbanner"></div><div class="back" id="nb"><i class="ti ti-arrow-left"></i>All focus areas</div><div class="ph"><i class="ti ti-plus"></i><h2>Add a focus area</h2></div><div class="form" id="nf" style="max-width:520px">'+
+    '<label>Name</label><input class="f-name" placeholder="e.g. Teleconsulting">'+
+    '<label>Description</label><input class="f-desc" placeholder="A few plain words">'+
+    '<div class="row2"><div><label>Status</label><select class="f-status">'+opts+'</select></div><div><label>Icon</label><input class="f-icon" list="il" value="ti-folder"><datalist id="il">'+dl+'</datalist></div></div>'+
+    '<label>Completion</label><div class="pctwrap"><input type="range" min="0" max="100" step="1" class="f-pct" value="0"><b class="f-po">0%</b></div>'+
+    '<label>Note</label><input class="f-note">'+
+    '<div class="actions"><button class="btn red sm f-save"><i class="ti ti-check"></i>Add</button><button class="btn sm f-cancel">Cancel</button></div>'+
+    '<p class="sub" style="margin-top:8px">You can add sections after saving.</p></div>';
+  document.getElementById("nb").addEventListener("click",function(){go("tracker");});
+  var el=document.getElementById("nf"),rg=el.querySelector(".f-pct");
+  rg.addEventListener("input",function(){el.querySelector(".f-po").textContent=rg.value+"%";});
+  el.querySelector(".f-cancel").addEventListener("click",function(){go("tracker");});
+  el.querySelector(".f-save").addEventListener("click",function(){
+    write({action:"addProject",pin:PIN,project:{name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:+rg.value,note:el.querySelector(".f-note").value.trim()}},"Focus area added.","tracker");
+  });
+}
+
+/* ========= write ========= */
+function write(payload,okMsg,after){
+  apiPost(payload).then(function(res){
+    if(res&&res.ok){ STATE={config:res.config,projects:res.projects,sections:res.sections}; if(after===true){go("tracker");} else if(typeof after==="string"){go(after);} else { editingMeta=false; editingSection=null; render(); } banner(okMsg,"ok"); }
+    else banner((res&&res.error)||"Could not save.","err");
+  }).catch(function(){ banner("Network error — not saved.","err"); });
+}
+
+document.getElementById("burger").addEventListener("click",function(){document.getElementById("layout").classList.toggle("closed");});
+boot();
+</script>
+</body>
+</html>
