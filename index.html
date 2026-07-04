@@ -70,7 +70,7 @@
   .goal .d{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--red);background:#fbe9ea;border-radius:20px;padding:3px 10px}
   .goal p{font-size:13px;color:#333;margin:10px 0 0;line-height:1.4}
 
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
   .kpi{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
   .kpi small{font-size:12px;color:var(--gray);font-weight:500;display:block}
   .kpi b{font-size:26px;font-weight:700}
@@ -127,6 +127,73 @@
   .ph h2{font-size:22px;font-weight:700;margin:0}
   .placeholder{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--bg-soft);color:var(--gray);font-size:13px;margin-top:14px}
   .center{color:var(--gray-2);padding:50px 10px;font-size:14px;text-align:center}
+  /* program hub */
+  .htitle{font-size:24px;font-weight:700;margin:0}
+  .hsub{color:var(--gray);font-size:14px;margin:2px 0 0}
+  .hubrule{border:0;border-top:4px solid var(--red);margin:14px 0 18px}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+  .stat{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .stat .stn2{font-size:24px;font-weight:700}
+  .stat .slbl{font-size:12px;color:var(--gray);font-weight:500}
+  .stat.acc .stn2{color:var(--red)}
+  .plabel{display:flex;justify-content:space-between;font-size:13px;color:var(--gray);font-weight:500;margin:0 0 6px;gap:10px;flex-wrap:wrap}
+  .pbar{height:12px;border-radius:6px;background:#eee;overflow:hidden}
+  .pbar b{display:block;height:100%;background:#b9837f}
+  .pnote{font-size:12px;color:var(--gray);margin:8px 0 0}
+  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+  .pcard{border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;flex-direction:column;background:#fff}
+  .pchead{background:var(--red);color:#fff;padding:12px 15px}
+  .pchead.mvp{background:#2b6cb0}
+  .pchead.plan{background:#9a9a9a}
+  .pcname{font-size:17px;font-weight:700;line-height:1.1}
+  .pcsub{font-size:12px;opacity:.9;margin-top:2px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;padding:10px 15px;border-bottom:1px solid var(--line)}
+  .chip{font-size:11px;font-weight:600;padding:3px 11px;border-radius:20px;border:1px solid var(--line);background:#fff;color:var(--gray)}
+  .chip.on{color:#fff;border-color:transparent}
+  .chip[data-chip]{cursor:pointer}
+  .pcbody{padding:14px 15px;flex:1}
+  .pmeta{font-size:12px;color:var(--gray);margin-bottom:10px}
+  .ov{font-size:26px;font-weight:700}
+  .ovl{font-size:12px;color:var(--gray)}
+  .obar{height:8px;border-radius:5px;background:#eee;overflow:hidden;margin:4px 0 14px}
+  .obar b{display:block;height:100%;background:#b9837f}
+  .obar b.done{background:var(--done)}
+  .strow{display:grid;grid-template-columns:64px 1fr 42px;align-items:center;gap:8px;font-size:12px;margin-bottom:7px}
+  .strow .stl{color:var(--gray);font-weight:500}
+  .stb{height:6px;border-radius:4px;background:#eee;overflow:hidden}
+  .stb b{display:block;height:100%;background:#b9837f}
+  .strow .stn{text-align:right;color:var(--gray)}
+  .v2line{margin-top:8px;font-size:12px;font-weight:600;color:#7a4ad6}
+  .pcfoot{padding:12px 15px;border-top:1px solid var(--line)}
+  .flink{font-size:13px;font-weight:600;color:var(--red);display:flex;justify-content:space-between;cursor:pointer;margin-bottom:2px}
+  .lk{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--gray);margin:12px 0 5px}
+  .lkrow{display:flex;gap:6px}
+  .lkrow .lkin{flex:1;font-family:inherit;font-size:12px;padding:7px 9px;border:1px solid var(--line);border-radius:6px}
+  .mlink{font-size:13px;color:var(--red);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .lknone{font-size:12px;color:var(--gray-2)}
+  .plannote{color:var(--gray);font-size:13px;padding:20px 15px;text-align:center}
+  @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.cgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.cgrid{grid-template-columns:1fr}}
+  /* embed gallery */
+  .egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:6px 0 4px}
+  .etile{position:relative;border:1px solid var(--line);border-radius:11px;padding:14px 10px;text-align:center;text-decoration:none;color:var(--ink);background:#fff;display:flex;flex-direction:column;align-items:center;gap:6px;transition:box-shadow .12s,border-color .12s}
+  .etile:hover{border-color:var(--red);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+  .etile i.eic{font-size:26px;color:var(--red)}
+  .et-title{font-size:12.5px;font-weight:500;line-height:1.25;word-break:break-word}
+  .et-type{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-2)}
+  .erm{position:absolute;top:5px;right:7px;color:var(--gray-2);font-size:14px;cursor:pointer}
+  .erm:hover{color:#b51e22}
+  /* curated table */
+  .ctab{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  .ctab th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--gray);font-weight:700;padding:8px 10px;border-bottom:2px solid var(--line)}
+  .ctab td{padding:9px 10px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+  .ctab tr:hover td{background:var(--bg-soft)}
+  .cfile{color:var(--red);text-decoration:none;font-size:12px;display:inline-flex;align-items:center;gap:5px}
+  .cfile.nofile{color:var(--gray-2)}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:5px;white-space:nowrap}
+  .cpill{display:inline-block;font-size:11px;font-weight:600;padding:3px 11px;border-radius:20px;white-space:nowrap}
+  .cselect{font-family:inherit;font-size:12px;padding:5px 7px;border:1px solid var(--line);border-radius:6px}
+  .ctab input.cin{font-family:inherit;font-size:12px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;width:100%}
   .ltab{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
   .ltab th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--gray);font-weight:700;padding:6px 4px;text-align:center}
   .ltab th:first-child{text-align:left}
@@ -170,27 +237,34 @@ var DEMO = {
     milestones:[{label:"30 Day",text:"Guidelines + algorithms live"},{label:"60 Day",text:"Courses + formularies built"},{label:"90 Day",text:"AI tools + vitals piloted"},{label:"120 Day",text:"Everything centralized here"}] },
   projects:[
     {id:"p1",name:"Basic Course",icon:"ti-book",description:"Species ER courses \u2014 Chelonian, avian, rabbit, and more",status:"In progress",percent:60,note:"Rolls up from species trackers",order:1},
-    {id:"p2",name:"NERD Education",icon:"ti-school",description:"Curated cases and the TMI 2027 curriculum",status:"In progress",percent:55,note:"Curated cases building",order:2},
-    {id:"p3",name:"Resources Updates",icon:"ti-clipboard-check",description:"Algorithms and reference charts",status:"On track",percent:68,note:"10 live, 2 in draft",order:3},
-    {id:"p4",name:"Exotics AI",icon:"ti-robot",description:"Exotics GPT and AI teaching tools",status:"Building",percent:40,note:"Error-testing phase",order:4},
-    {id:"p5",name:"Vitals Project",icon:"ti-heartbeat",description:"Species-specific vital-sign alerts for intake",status:"In progress",percent:65,note:"POTZ alert validated",order:5}
+    {id:"p2",name:"NERD Education",icon:"ti-school",description:"Curated cases and the TMI 2027 curriculum",status:"In progress",percent:55,note:"Curated cases building",order:2,estHours:80},
+    {id:"p3",name:"Resources Updates",icon:"ti-clipboard-check",description:"Algorithms and reference charts",status:"On track",percent:68,note:"10 live, 2 in draft",order:3,estHours:40},
+    {id:"p4",name:"Exotics AI",icon:"ti-robot",description:"Exotics GPT and AI teaching tools",status:"Building",percent:40,note:"Error-testing phase",order:4,estHours:60},
+    {id:"p5",name:"Vitals Project",icon:"ti-heartbeat",description:"Species-specific vital-sign alerts for intake",status:"In progress",percent:65,note:"POTZ alert validated",order:5,estHours:50}
   ],
   sections:[
     {projectId:"p3",name:"Algorithms",status:"On track",order:1},
     {projectId:"p3",name:"Reference Charts",status:"In progress",order:2}
   ],
   courses:[
-    {slug:"chelonian",name:"Chelonian",sub:"Turtle & Tortoise",status:"In progress",planned:false,order:1,N:31,doneHours:210,totalHours:310,pct:68},
-    {slug:"avian",name:"Avian",sub:"Birds",status:"In progress",planned:false,order:2,N:24,doneHours:150,totalHours:240,pct:63},
-    {slug:"guineapig",name:"Guinea Pig",sub:"",status:"MVP",planned:false,order:3,N:19,doneHours:95,totalHours:190,pct:50},
-    {slug:"ferret",name:"Ferret",sub:"",status:"MVP",planned:false,order:4,N:17,doneHours:80,totalHours:170,pct:47},
-    {slug:"rabbit",name:"Rabbit",sub:"",status:"MVP",planned:false,order:5,N:25,doneHours:170,totalHours:250,pct:68},
-    {slug:"beardeddragon",name:"Bearded Dragon",sub:"Reptile",status:"MVP",planned:false,order:6,N:19,doneHours:90,totalHours:190,pct:47},
-    {slug:"reptiles",name:"Reptiles",sub:"",status:"In progress",planned:false,order:7,N:18,doneHours:80,totalHours:180,pct:44},
-    {slug:"chicken",name:"Chicken / Duck",sub:"",status:"Planned",planned:true,order:8,N:0,doneHours:0,totalHours:0,pct:0},
-    {slug:"snake",name:"Snake",sub:"",status:"Planned",planned:true,order:9,N:0,doneHours:0,totalHours:0,pct:0},
-    {slug:"chinchilla",name:"Chinchilla",sub:"",status:"Planned",planned:true,order:10,N:0,doneHours:0,totalHours:0,pct:0}
-  ]
+    {slug:"chelonian",name:"Chelonian",sub:"Turtle & Tortoise",status:"In Progress",statuses:["In Progress","V1"],planned:false,order:1,N:31,doneHours:210,totalHours:310,pct:68,link:"",stages:{html:29,review:10,media:12,final:8,v2:0}},
+    {slug:"avian",name:"Avian",sub:"Birds",status:"In Progress",statuses:["In Progress","V1"],planned:false,order:2,N:24,doneHours:150,totalHours:240,pct:63,link:"",stages:{html:24,review:22,media:23,final:0,v2:0}},
+    {slug:"guineapig",name:"Guinea Pig",sub:"",status:"MVP",statuses:["MVP","V1"],planned:false,order:3,N:19,doneHours:190,totalHours:190,pct:100,link:"",stages:{html:19,review:19,media:19,final:19,v2:0}},
+    {slug:"ferret",name:"Ferret",sub:"",status:"MVP",statuses:["MVP"],planned:false,order:4,N:17,doneHours:80,totalHours:170,pct:47,link:"",stages:{html:17,review:0,media:0,final:0,v2:0}},
+    {slug:"rabbit",name:"Rabbit",sub:"",status:"MVP",statuses:["MVP","V1"],planned:false,order:5,N:25,doneHours:250,totalHours:250,pct:100,link:"",stages:{html:25,review:25,media:25,final:25,v2:0}},
+    {slug:"beardeddragon",name:"Bearded Dragon",sub:"Reptile",status:"MVP",statuses:["MVP"],planned:false,order:6,N:19,doneHours:90,totalHours:190,pct:47,link:"",stages:{html:19,review:0,media:0,final:0,v2:0}},
+    {slug:"reptiles",name:"Reptiles",sub:"",status:"In Progress",statuses:["In Progress"],planned:false,order:7,N:18,doneHours:80,totalHours:180,pct:44,link:"",stages:{html:18,review:0,media:0,final:0,v2:0}},
+    {slug:"chicken",name:"Chicken / Duck",sub:"",status:"Planned",statuses:["Planned"],planned:true,order:8,N:0,doneHours:0,totalHours:0,pct:0,link:"",stages:{html:0,review:0,media:0,final:0,v2:0}},
+    {slug:"snake",name:"Snake",sub:"",status:"Planned",statuses:["Planned"],planned:true,order:9,N:0,doneHours:0,totalHours:0,pct:0,link:"",stages:{html:0,review:0,media:0,final:0,v2:0}},
+    {slug:"chinchilla",name:"Chinchilla",sub:"",status:"Planned",statuses:["Planned"],planned:true,order:10,N:0,doneHours:0,totalHours:0,pct:0,link:"",stages:{html:0,review:0,media:0,final:0,v2:0}}
+  ],
+  curated:[
+    {fileUrl:"",title:"The Sick Chicken",year:"2026",updateState:"Approved",status:"Completed",order:1},
+    {fileUrl:"",title:"Avian Respiratory Disease",year:"2026",updateState:"Approved",status:"Completed",order:2},
+    {fileUrl:"",title:"Rodent Respiratory Disease",year:"2025",updateState:"Update",status:"Not started",order:3},
+    {fileUrl:"",title:"Reptile Wound Care",year:"2026",updateState:"Approved",status:"Completed",order:4}
+  ],
+  embeds:{}
 };
 
 /* ========= status palette (VEG) ========= */
@@ -235,6 +309,7 @@ function boot(){
     .catch(function(){ STATE=DEMO; LIVE=false; afterLoad(); });
 }
 function afterLoad(){
+  if(!STATE.embeds) STATE.embeds={};
   document.getElementById("brandName").textContent=STATE.config.siteTitle;
   document.getElementById("topNote").textContent=STATE.config.updatedNote;
   render();
@@ -248,6 +323,12 @@ function coursesList(){return STATE.courses||[];}
 function coursesBuilt(){return coursesList().filter(function(c){return !c.planned;});}
 function basicRollup(){var cs=coursesBuilt();var done=0,tot=0;cs.forEach(function(c){done+=c.doneHours;tot+=c.totalHours;});return tot?Math.round(done/tot*100):0;}
 function projPct(p){if(p.id===COURSE_PID)return basicRollup();var s=sectionsFor(p.id);if(s.length){return Math.round(s.filter(function(x){return x.status==="Done";}).length/s.length*100);}return p.percent;}
+function projHours(p){
+  if(p.id===COURSE_PID){var cs=coursesBuilt(),done=0,tot=0;cs.forEach(function(c){done+=c.doneHours;tot+=c.totalHours;});if(!tot)return null;return {total:tot,done:done,remaining:Math.max(0,Math.round(tot-done))};}
+  var est=Number(p.estHours)||0;if(est<=0)return null;
+  var done=est*projPct(p)/100;return {total:est,done:done,remaining:Math.max(0,Math.round(est-done))};
+}
+function programRemaining(){return (STATE.projects||[]).reduce(function(s,p){var h=projHours(p);return s+(h?h.remaining:0);},0);}
 function projById(id){return (STATE.projects||[]).filter(function(p){return p.id===id;})[0];}
 function banner(msg,kind){var b=document.getElementById("mbanner");if(!b)return;b.className="banner "+kind;b.textContent=msg;b.classList.remove("hidden");if(kind==="ok")setTimeout(function(){b.classList.add("hidden");},2600);}
 
@@ -255,48 +336,48 @@ function banner(msg,kind){var b=document.getElementById("mbanner");if(!b)return;
 function toEmbedUrl(raw){
   var u=(raw||"").trim(); if(!u) return null;
   var id=function(re){var m=u.match(re);return m?m[1]:null;};
-  var d=id(/docs\.google\.com\/document\/d\/([a-zA-Z0-9_-]+)/);
-  if(d) return {type:"Doc",url:"https://docs.google.com/document/d/"+d+"/preview"};
-  var s=id(/docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
-  if(s){var g=id(/[#&?]gid=([0-9]+)/);return {type:"Sheet",url:"https://docs.google.com/spreadsheets/d/"+s+"/preview"+(g?"#gid="+g:"")};}
-  var p=id(/docs\.google\.com\/presentation\/d\/([a-zA-Z0-9_-]+)/);
-  if(p) return {type:"Slides",url:"https://docs.google.com/presentation/d/"+p+"/embed"};
-  var fm=id(/docs\.google\.com\/forms\/d\/(?:e\/)?([a-zA-Z0-9_-]+)/);
-  if(fm) return {type:"Form",url:"https://docs.google.com/forms/d/e/"+fm+"/viewform?embedded=true"};
-  var f=id(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if(f) return {type:"Drive",url:"https://drive.google.com/file/d/"+f+"/preview"};
-  var op=id(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if(op && /drive\.google\.com/.test(u)) return {type:"Drive",url:"https://drive.google.com/file/d/"+op+"/preview"};
-  if(/^https?:\/\//.test(u)) return {type:"Web",url:u};
+  if(/docs\.google\.com\/document\//.test(u)) return {type:"Doc",href:u};
+  if(/docs\.google\.com\/spreadsheets\//.test(u)) return {type:"Sheet",href:u};
+  if(/docs\.google\.com\/presentation\//.test(u)) return {type:"Slides",href:u};
+  if(/docs\.google\.com\/forms\//.test(u)) return {type:"Form",href:u};
+  if(/drive\.google\.com/.test(u)) return {type:"Drive",href:u};
+  if(/^https?:\/\//.test(u)) return {type:"Web",href:u};
   return null;
 }
 function embedIcon(t){return {Doc:"ti-file-text",Sheet:"ti-table",Slides:"ti-presentation",Form:"ti-forms",Drive:"ti-brand-google-drive",Web:"ti-world"}[t]||"ti-link";}
-function embedHeight(t){return t==="Slides"?420:t==="Web"?520:600;}
 
-function embedCardHTML(e,idx,editable){
-  return '<div class="embed-card"><div class="embed-head"><i class="ti '+embedIcon(e.type)+'"></i>'+esc(e.title||e.type)+
-    '<span class="etype">'+esc(e.type)+(editable?'</span><i class="ti ti-x" style="cursor:pointer;margin-left:10px" data-rm="'+idx+'" title="Remove"></i>':'</span>')+
-    '</div><iframe class="embed-frame" src="'+esc(e.url)+'" height="'+embedHeight(e.type)+'" allow="fullscreen" loading="lazy"></iframe></div>';
-}
 function embedBlockHTML(viewId){
-  var list=embeds[viewId]||[];
-  var h=list.map(function(e,i){return embedCardHTML(e,i,EDIT);}).join("");
+  var list=(STATE.embeds&&STATE.embeds[viewId])||[];
+  var h="";
+  if(list.length){
+    h+='<div class="egrid">'+list.map(function(e,i){
+      return '<a class="etile" href="'+esc(e.href)+'" target="_blank" rel="noopener">'+
+        (EDIT?'<i class="ti ti-x erm" data-rm="'+i+'" title="Remove"></i>':'')+
+        '<i class="ti '+embedIcon(e.type)+' eic"></i><span class="et-title">'+esc(e.title||e.type)+'</span><span class="et-type">'+esc(e.type)+'</span></a>';
+    }).join("")+'</div>';
+  } else if(!EDIT){ h+='<div class="lknone" style="padding:4px 0">No files linked yet.</div>'; }
   if(EDIT){
-    h+='<div class="embed-add"><div style="font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray)">Embed a Google doc, sheet, deck, form or drive file</div>'+
+    h+='<div class="embed-add"><div style="font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray)">Add a Google doc, sheet, deck, form or drive file</div>'+
        '<div class="r"><input id="emTitle" placeholder="Label (optional)"><input id="emUrl" placeholder="Paste a Google Docs / Sheets / Slides / Drive link…" style="flex:2">'+
-       '<button class="btn red sm" id="emAdd"><i class="ti ti-plus"></i>Embed</button></div>'+
-       '<div style="font-size:11px;color:var(--gray-2);margin-top:8px">Tip: set the file to \u201cAnyone with the link \u2192 Viewer\u201d (or Publish to web) so everyone can see it.</div></div>';
+       '<button class="btn red sm" id="emAdd"><i class="ti ti-plus"></i>Add</button></div>'+
+       '<div style="font-size:11px;color:var(--gray-2);margin-top:8px">Saved for the whole team. Tiles open the file in a new tab \u2014 they work even when a private file can\u2019t preview.</div></div>';
   }
   return h;
 }
 function bindEmbeds(viewId){
   var main=document.getElementById("main");
-  main.querySelectorAll("[data-rm]").forEach(function(x){x.addEventListener("click",function(){ (embeds[viewId]||[]).splice(+x.getAttribute("data-rm"),1); render(); });});
+  main.querySelectorAll(".erm").forEach(function(x){x.addEventListener("click",function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    var list=(STATE.embeds&&STATE.embeds[viewId])||[]; var e=list[+x.getAttribute("data-rm")]; if(!e)return;
+    if(LIVE){ apiPost({action:"deleteEmbed",pin:PIN,viewId:viewId,href:e.href}).then(function(res){ if(res&&res.ok){STATE=res;render();banner("Removed.","ok");} else banner((res&&res.error)||"Not removed.","err"); }); }
+    else { list.splice(+x.getAttribute("data-rm"),1); render(); }
+  });});
   var add=document.getElementById("emAdd");
   if(add) add.addEventListener("click",function(){
     var url=document.getElementById("emUrl").value, title=document.getElementById("emTitle").value.trim();
-    var d=toEmbedUrl(url); if(!d){ banner("That doesn\u2019t look like a Google link I can embed.","err"); return; }
-    (embeds[viewId]=embeds[viewId]||[]).push({title:title||d.type,url:d.url,type:d.type}); render();
+    var d=toEmbedUrl(url); if(!d){ banner("That doesn\u2019t look like a link I can add.","err"); return; }
+    if(LIVE){ apiPost({action:"addEmbed",pin:PIN,viewId:viewId,title:title||d.type,href:d.href,type:d.type}).then(function(res){ if(res&&res.ok){STATE=res;render();banner("Added.","ok");} else banner((res&&res.error)||"Not added.","err"); }); }
+    else { if(!STATE.embeds)STATE.embeds={}; (STATE.embeds[viewId]=STATE.embeds[viewId]||[]).push({title:title||d.type,href:d.href,type:d.type}); render(); }
   });
 }
 
@@ -370,7 +451,7 @@ function trackerHTML(){
   var onTrack=ps.filter(function(p){return p.status==="Done"||p.status==="On track";}).length;
   var risk=ps.filter(function(p){return p.status==="At risk";}).length;
   var h='<div class="ph"><i class="ti ti-layout-dashboard"></i><h2>Project Tracking</h2></div><p class="sub" style="display:flex;justify-content:space-between;align-items:center">Live focus areas, section progress, and completion data <span>'+editButtonHTML()+'</span></p>';
-  h+='<div class="kpis"><div class="kpi"><small>Focus areas</small><b>'+total+'</b></div><div class="kpi accent"><small>Overall completion</small><b>'+avg+'%</b></div><div class="kpi"><small>On track</small><b>'+onTrack+'</b></div><div class="kpi"><small>Needs attention</small><b>'+risk+'</b></div></div>';
+  h+='<div class="kpis"><div class="kpi"><small>Focus areas</small><b>'+total+'</b></div><div class="kpi accent"><small>Overall completion</small><b>'+avg+'%</b></div><div class="kpi"><small>Hrs remaining</small><b>~'+programRemaining()+'</b></div><div class="kpi"><small>On track</small><b>'+onTrack+'</b></div><div class="kpi"><small>Needs attention</small><b>'+risk+'</b></div></div>';
   var st=segStats(ps);
   h+='<div class="segbar">'+st.seg+'</div><div class="legend">'+st.legend+'</div>';
   h+='<div class="grid" id="grid"></div>';
@@ -390,8 +471,9 @@ function mountTracker(){
   var ap=document.getElementById("addProj"); if(ap) ap.addEventListener("click",function(){VIEW="NEW";render();});
 }
 function cardView(p){
-  var secs=sectionsFor(p.id),pct=projPct(p),mm=m(p.status);
+  var secs=sectionsFor(p.id),pct=projPct(p),mm=m(p.status),hh=projHours(p);
   var right=secs.length?(secs.filter(function(s){return s.status==="Done";}).length+"/"+secs.length+" sections"):esc(p.note);
+  if(hh) right=(right?right+" \u00b7 ":"")+hh.remaining+" hrs left";
   var el=document.createElement("div"); el.className="card click";
   el.innerHTML='<div class="card-head"><span class="name"><i class="ti '+esc(p.icon)+'"></i>'+esc(p.name)+'</span><span class="badge" style="color:'+mm.fg+'">'+esc(p.status)+'</span></div>'+
     '<div class="card-body"><div class="desc">'+esc(p.description)+'</div>'+
@@ -404,6 +486,7 @@ function cardView(p){
 /* ---- detail (focus-area project) ---- */
 function pageHTML(id){
   if(id.indexOf("course:")===0) return courseShellHTML(id.slice(7));
+  if(id==="curated") return curatedHTML();
   var p=projById(id);
   if(p) return (p.id===COURSE_PID)?courseHubHTML(p):detailHTML(p);
   var m2=PAGE[id]; if(!m2) return '<div class="center">Not found.</div>';
@@ -431,6 +514,7 @@ render=function(){
   _origRender();
   var main=document.getElementById("main");
   if(VIEW==="NEW"){ renderNewForm(); return; }
+  if(VIEW==="curated"){ bindCurated(); return; }
   if(VIEW.indexOf("course:")===0){ mountCourseTracker(VIEW.slice(7)); return; }
   var p=(VIEW!=="home"&&VIEW!=="tracker")?projById(VIEW):null;
   if(!p) return;
@@ -462,33 +546,85 @@ render=function(){
 var STAGES=[["html","HTML"],["review","Review"],["media","Media"],["final","Final"]];
 function courseDoneHours(l){return (l.html?5:0)+(l.review?1.5:0)+(l.media?2:0)+(l.final?1.5:0);}
 
+var CHIP_LABELS=["In Progress","MVP","V1","V2","V3"];
+var CHIP_COLORS={"In Progress":"#d98014","MVP":"#2b6cb0","V1":"#4a7a36","V2":"#7a4ad6","V3":"#0e9e7a"};
+var STAGE_ROWS=[["html","HTML"],["review","Review"],["media","Media"],["final","Final"]];
+
 function courseHubHTML(p){
-  var pct=basicRollup();
+  var cs=coursesList(), built=cs.filter(function(c){return !c.planned;}), planned=cs.filter(function(c){return c.planned;});
+  var totalLessons=cs.reduce(function(s,c){return s+c.N;},0), estHrs=cs.reduce(function(s,c){return s+c.totalHours;},0);
+  var pct=basicRollup(), hh=projHours(p), done=hh?hh.done:0, tot=hh?hh.total:0, rem=hh?hh.remaining:0;
   var h='<div class="back" data-back="1"><i class="ti ti-arrow-left"></i>All focus areas</div>';
-  h+='<div class="dhead"><div class="dtitle"><i class="ti '+esc(p.icon)+'"></i>'+esc(p.name)+'</div><div class="bigpct">'+pct+'%<small>program build</small></div></div>';
-  h+='<p class="sub" style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span>'+esc(p.description)+'</span><span>'+editButtonHTML()+'</span></p>';
-  h+='<div class="h2">Species courses</div><p class="sub">Time-weighted build progress \u00b7 select a course to track lessons</p><div class="grid" id="cgrid"></div>';
-  if(EDIT) h+='<div style="margin-top:16px"><button class="btn sm" id="addCourse"><i class="ti ti-plus"></i>Add course</button></div>';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px"><div><div class="htitle">Basic Course \u00b7 Program Tracker</div><p class="hsub">Build progress across every species course \u00b7 rolls up automatically</p></div>'+editButtonHTML()+'</div>';
+  h+='<hr class="hubrule">';
+  h+='<div class="stats">'+
+     stat(cs.length,"Courses")+stat(built.length,"In development")+stat(planned.length,"To be developed")+
+     stat(totalLessons,"Total lessons")+stat(estHrs,"Est. build hrs")+stat(pct+"%","Overall build",true)+'</div>';
+  h+='<div class="plabel"><span>Program completion (time-weighted, all built courses)</span><span>'+pct+'% \u00b7 '+(Math.round(done*10)/10)+' / '+tot+' hrs \u00b7 '+rem+' hrs left</span></div>';
+  h+='<div class="pbar"><b style="width:'+pct+'%"></b></div>';
+  h+='<p class="pnote">Effort model \u2014 per lesson: HTML 5h \u00b7 Review 1.5h \u00b7 Media 2h \u00b7 Final 1.5h (10h).</p>';
+  h+='<div class="h2" style="display:flex;justify-content:space-between;align-items:center">Course modules'+(EDIT?'<button class="btn sm" id="addCourse"><i class="ti ti-plus"></i>Add course</button>':'')+'</div>';
+  h+='<div class="cgrid" id="cgrid"></div>';
   h+='<div class="h2">Embeds</div><p class="sub">Docs, sheets and decks for the program</p>'+embedBlockHTML(p.id);
   return h;
 }
+function stat(n,l,acc){return '<div class="stat'+(acc?" acc":"")+'"><div class="stn2">'+n+'</div><div class="slbl">'+l+'</div></div>';}
+
 function mountCourseHub(p){
   var grid=document.getElementById("cgrid");
   coursesList().forEach(function(c){ grid.appendChild(courseCard(c)); });
   var ac=document.getElementById("addCourse"); if(ac) ac.addEventListener("click",addCourseFlow);
   bindEmbeds(p.id);
 }
+
 function courseCard(c){
-  var mm=m(c.status), el=document.createElement("div"); el.className="card"+(c.planned?"":" click");
-  var body=c.planned?'<div class="card-body"><div class="desc">Planned \u2014 not built yet.</div></div>'
-    :'<div class="card-body"><div class="obar"><b style="width:'+c.pct+'%;background:'+mm.bar+'"></b></div><div class="meta"><span>'+c.N+' lessons \u00b7 '+c.doneHours+'/'+c.totalHours+' hrs</span><span>'+c.pct+'%</span></div></div>';
-  el.innerHTML='<div class="card-head"'+(c.planned?' style="background:#9a9a9a"':'')+'><span class="name">'+esc(c.name)+(c.sub?' <span style="font-weight:400;opacity:.9;font-size:12px">'+esc(c.sub)+'</span>':'')+'</span><span class="badge" style="color:'+(c.planned?'#6b6b6b':mm.fg)+'">'+esc(c.status)+'</span></div>'+body;
-  if(!c.planned) el.addEventListener("click",function(){go("course:"+c.slug);});
+  var el=document.createElement("div"); el.className="pcard";
+  var head='<div class="pchead'+(c.planned?" plan":(c.statuses.indexOf("MVP")>-1?" mvp":""))+'"><div class="pcname">'+esc(c.name)+'</div>'+(c.sub?'<div class="pcsub">'+esc(c.sub)+'</div>':'')+'</div>';
+  var onOf=function(lab){return c.statuses.some(function(s){return s.toLowerCase()===lab.toLowerCase();});};
+  var chips='<div class="chips">'+CHIP_LABELS.map(function(lab){var on=onOf(lab);return '<span class="chip'+(on?" on":"")+'" data-chip="'+lab+'"'+(on?' style="background:'+CHIP_COLORS[lab]+'"':"")+'>'+lab+'</span>';}).join("")+'</div>';
+  var body;
+  if(c.planned){ body='<div class="plannote">Course not built yet \u2014 planned for development.</div>'; }
+  else {
+    var rem=Math.max(0,Math.round(c.totalHours-c.doneHours));
+    body='<div class="pcbody"><div class="pmeta">'+c.N+' lessons \u00b7 '+c.totalHours+' hrs est. \u00b7 '+rem+' hrs left</div>'+
+      '<div><span class="ov">'+c.pct+'%</span> <span class="ovl">overall</span></div>'+
+      '<div class="obar"><b class="'+(c.pct>=100?"done":"")+'" style="width:'+c.pct+'%"></b></div>';
+    STAGE_ROWS.forEach(function(s){var d=c.stages[s[0]],w=c.N?Math.round(d/c.N*100):0;body+='<div class="strow"><span class="stl">'+s[1]+'</span><span class="stb"><b style="width:'+w+'%"></b></span><span class="stn">'+d+'/'+c.N+'</span></div>';});
+    body+='<div class="v2line">V2 dev: '+c.stages.v2+' / '+c.N+'</div></div>';
+  }
+  var foot='<div class="pcfoot">'+(c.planned?'':'<div class="flink" data-open="1"><span>Open build tracker</span><span>\u2192</span></div>')+linkSlotHTML(c)+'</div>';
+  el.innerHTML=head+chips+body+foot;
+  if(EDIT){ el.querySelectorAll("[data-chip]").forEach(function(ch){ch.addEventListener("click",function(){
+    var lab=ch.getAttribute("data-chip");
+    var next=c.statuses.filter(function(s){return s.toLowerCase()!==lab.toLowerCase();});
+    if(next.length===c.statuses.length) next.push(lab);
+    if(!next.length)next=["In Progress"];
+    saveCourseFields(c,{statuses:next});
+  });}); }
+  var op=el.querySelector("[data-open]"); if(op) op.addEventListener("click",function(){go("course:"+c.slug);});
+  bindLinkSlot(el,c);
   return el;
+}
+
+function linkSlotHTML(c){
+  var h='<div class="lk">Module / HTML link</div>';
+  if(EDIT){ h+='<div class="lkrow"><input class="lkin" value="'+esc(c.link||"")+'" placeholder="Paste a link\u2026"><button class="btn red sm lksave">Save</button></div>'; }
+  else if(c.link){ h+='<a class="mlink" href="'+esc(c.link)+'" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Open module</a>'; }
+  else { h+='<div class="lknone">No link yet</div>'; }
+  return h;
+}
+function bindLinkSlot(el,c){
+  var b=el.querySelector(".lksave"); if(!b)return;
+  b.addEventListener("click",function(){ saveCourseFields(c,{link:el.querySelector(".lkin").value.trim()}); });
+}
+function saveCourseFields(c,fields){
+  var payload={action:"saveCourse",pin:PIN,slug:c.slug,name:c.name,sub:c.sub,planned:c.planned,link:c.link,statuses:c.statuses};
+  for(var k in fields) payload[k]=fields[k];
+  apiPost(payload).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;render();banner("Saved.","ok");} else banner((res&&res.error)||"Not saved.","err"); });
 }
 function addCourseFlow(){
   var nm=prompt("New course name:"); if(!nm)return; var sub=prompt("Subtitle (optional):")||"";
-  apiPost({action:"addCourse",pin:PIN,name:nm,sub:sub,status:"In progress"}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;go("p1");banner("Course added.","ok");} else banner((res&&res.error)||"Not added.","err"); });
+  apiPost({action:"addCourse",pin:PIN,name:nm,sub:sub,statuses:["In Progress"]}).then(function(res){ if(res&&res.ok){STATE.courses=res.courses||STATE.courses;go("p1");banner("Course added.","ok");} else banner((res&&res.error)||"Not added.","err"); });
 }
 
 function courseShellHTML(slug){ return '<div class="back" data-back="1"><i class="ti ti-arrow-left"></i>Basic Course</div><div id="courseBody"><div class="center">Loading course\u2026</div></div>'; }
@@ -506,7 +642,7 @@ function renderCourseBody(slug){
   lessons.forEach(function(l){ if(!bySec[l.section]){bySec[l.section]=[];secOrder.push(l.section);} bySec[l.section].push(l); });
   var doneH=lessons.reduce(function(s,l){return s+courseDoneHours(l);},0), totH=lessons.length*10, pct=totH?Math.round(doneH/totH*100):0;
   var h='<div class="dhead"><div class="dtitle"><i class="ti ti-book"></i>'+esc(c.name)+(c.sub?' <span style="font-size:13px;color:var(--gray-2);font-weight:400">'+esc(c.sub)+'</span>':'')+'</div><div class="bigpct">'+pct+'%<small>build</small></div></div>';
-  h+='<p class="sub" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:10px"><span>'+lessons.length+' lessons \u00b7 '+(Math.round(doneH*10)/10)+'/'+totH+' hrs \u00b7 HTML 5h \u00b7 Review 1.5h \u00b7 Media 2h \u00b7 Final 1.5h</span><span>'+editButtonHTML()+'</span></p>';
+  h+='<p class="sub" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:10px"><span>'+lessons.length+' lessons \u00b7 '+(Math.round(doneH*10)/10)+'/'+totH+' hrs \u00b7 '+Math.max(0,Math.round(totH-doneH))+' hrs left \u00b7 HTML 5h \u00b7 Review 1.5h \u00b7 Media 2h \u00b7 Final 1.5h</span><span>'+editButtonHTML()+'</span></p>';
   secOrder.forEach(function(sec){
     var ls=bySec[sec], sd=ls.reduce(function(s,l){return s+courseDoneHours(l);},0), stot=ls.length*10, sp=stot?Math.round(sd/stot*100):0;
     h+='<div class="h2" style="display:flex;justify-content:space-between"><span>'+esc(sec)+'</span><span style="font-size:13px;color:var(--gray);font-weight:400">'+sp+'%</span></div>';
@@ -565,12 +701,13 @@ function renderMetaForm(p,box){
     '<div class="row2"><div><label>Status</label><select class="f-status">'+opts+'</select></div><div><label>Icon</label><input class="f-icon" list="il" value="'+esc(p.icon)+'"><datalist id="il">'+dl+'</datalist></div></div>'+
     (secs.length?'<p class="sub" style="margin:8px 0 0">Completion is calculated from sections.</p>':'<label>Completion</label><div class="pctwrap"><input type="range" min="0" max="100" step="1" class="f-pct" value="'+p.percent+'"><b class="f-po">'+p.percent+'%</b></div>')+
     '<label>Note</label><input class="f-note" maxlength="140" value="'+esc(p.note)+'">'+
+    '<label>Est. hours to complete (optional)</label><input class="f-est" type="number" min="0" value="'+(p.estHours||"")+'" placeholder="e.g. 80">'+
     '<div class="actions"><button class="btn red sm f-save"><i class="ti ti-check"></i>Save</button><button class="btn sm f-cancel">Cancel</button><button class="btn danger sm f-del"><i class="ti ti-trash"></i>Delete</button></div>';
   box.innerHTML=""; box.appendChild(el);
   var rg=el.querySelector(".f-pct"); if(rg) rg.addEventListener("input",function(){el.querySelector(".f-po").textContent=rg.value+"%";});
   el.querySelector(".f-cancel").addEventListener("click",function(){editingMeta=false;render();});
   el.querySelector(".f-save").addEventListener("click",function(){
-    var payload={action:"saveProject",pin:PIN,project:{id:p.id,name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:rg?+rg.value:p.percent,note:el.querySelector(".f-note").value.trim(),order:p.order}};
+    var payload={action:"saveProject",pin:PIN,project:{id:p.id,name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:rg?+rg.value:p.percent,note:el.querySelector(".f-note").value.trim(),order:p.order,estHours:el.querySelector(".f-est")?el.querySelector(".f-est").value:""}};
     write(payload,"Saved.");
   });
   el.querySelector(".f-del").addEventListener("click",function(){ if(confirm('Remove "'+p.name+'" and its sections?')) write({action:"deleteProject",pin:PIN,id:p.id},"Removed.",true); });
@@ -603,6 +740,7 @@ function renderNewForm(){
     '<div class="row2"><div><label>Status</label><select class="f-status">'+opts+'</select></div><div><label>Icon</label><input class="f-icon" list="il" value="ti-folder"><datalist id="il">'+dl+'</datalist></div></div>'+
     '<label>Completion</label><div class="pctwrap"><input type="range" min="0" max="100" step="1" class="f-pct" value="0"><b class="f-po">0%</b></div>'+
     '<label>Note</label><input class="f-note">'+
+    '<label>Est. hours to complete (optional)</label><input class="f-est" type="number" min="0" placeholder="e.g. 80">'+
     '<div class="actions"><button class="btn red sm f-save"><i class="ti ti-check"></i>Add</button><button class="btn sm f-cancel">Cancel</button></div>'+
     '<p class="sub" style="margin-top:8px">You can add sections after saving.</p></div>';
   document.getElementById("nb").addEventListener("click",function(){go("tracker");});
@@ -610,16 +748,65 @@ function renderNewForm(){
   rg.addEventListener("input",function(){el.querySelector(".f-po").textContent=rg.value+"%";});
   el.querySelector(".f-cancel").addEventListener("click",function(){go("tracker");});
   el.querySelector(".f-save").addEventListener("click",function(){
-    write({action:"addProject",pin:PIN,project:{name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:+rg.value,note:el.querySelector(".f-note").value.trim()}},"Focus area added.","tracker");
+    write({action:"addProject",pin:PIN,project:{name:el.querySelector(".f-name").value.trim()||"Untitled",description:el.querySelector(".f-desc").value.trim(),status:el.querySelector(".f-status").value,icon:el.querySelector(".f-icon").value.trim()||"ti-folder",percent:+rg.value,note:el.querySelector(".f-note").value.trim(),estHours:el.querySelector(".f-est").value}},"Focus area added.","tracker");
   });
 }
 
 /* ========= write ========= */
 function write(payload,okMsg,after){
   apiPost(payload).then(function(res){
-    if(res&&res.ok){ STATE={config:res.config,projects:res.projects,sections:res.sections}; if(after===true){go("tracker");} else if(typeof after==="string"){go(after);} else { editingMeta=false; editingSection=null; render(); } banner(okMsg,"ok"); }
+    if(res&&res.ok){ STATE=res; if(after===true){go("tracker");} else if(typeof after==="string"){go(after);} else { editingMeta=false; editingSection=null; render(); } banner(okMsg,"ok"); }
     else banner((res&&res.error)||"Could not save.","err");
   }).catch(function(){ banner("Network error — not saved.","err"); });
+}
+
+/* ===== Curated Cases ===== */
+var CUR_STATUSES=["Completed","In progress","Approved","Not started"];
+var CUR_UPDATES=["Approved","Update",""];
+var CST={"Completed":{bg:"#edf4e8",fg:"#4a7a36"},"Approved":{bg:"#e8f0f8",fg:"#235a92"},"In progress":{bg:"#fbf0dd",fg:"#8a5410"},"Not started":{bg:"#f0f0f0",fg:"#5f5f5f"}};
+function cstatus(s){return CST[s]||CST["Not started"];}
+function updTagColor(st){return st==="Approved"?{bg:"#e6f2e6",fg:"#2f6b2f"}:st==="Update"?{bg:"#fbeee0",fg:"#8a5410"}:{bg:"#f0f0f0",fg:"#6b6b6b"};}
+
+function curatedHTML(){
+  var rows=STATE.curated||[];
+  var h='<div class="ph"><i class="ti ti-cards"></i><h2>Curated Cases</h2></div>';
+  h+='<p class="sub" style="display:flex;justify-content:space-between;align-items:center">Exotics topics list <span>'+editButtonHTML()+'</span></p>';
+  h+='<table class="ctab"><thead><tr><th style="width:150px">File</th><th>Title</th><th style="width:150px">Last Update</th><th style="width:140px">Status</th>'+(EDIT?'<th style="width:90px"></th>':'')+'</tr></thead><tbody id="cbody"></tbody></table>';
+  if(EDIT) h+='<div style="margin-top:12px"><button class="btn sm" id="curAdd"><i class="ti ti-plus"></i>Add case</button></div>';
+  else if(!rows.length) h+='<div class="placeholder">No cases yet.</div>';
+  return h;
+}
+function bindCurated(){
+  var body=document.getElementById("cbody"); if(!body)return;
+  (STATE.curated||[]).forEach(function(r){ body.appendChild(EDIT?curatedEditRow(r):curatedViewRow(r)); });
+  var add=document.getElementById("curAdd");
+  if(add) add.addEventListener("click",function(){ curatedWrite({action:"addCurated",pin:PIN,title:"New case",year:"2026",updateState:"Update",status:"Not started",fileUrl:""},"Case added."); });
+}
+function curatedViewRow(r){
+  var tr=document.createElement("tr");
+  var file=r.fileUrl?'<a class="cfile" href="'+esc(r.fileUrl)+'" target="_blank" rel="noopener"><i class="ti ti-file"></i> File</a>':'<span class="cfile nofile"><i class="ti ti-file"></i> —</span>';
+  var upd=(r.year||r.updateState)?(function(){var c=updTagColor(r.updateState);return '<span class="tag" style="background:'+c.bg+';color:'+c.fg+'">'+esc(r.year)+(r.updateState?" / "+esc(r.updateState):"")+'</span>';})():"";
+  var st=cstatus(r.status);
+  tr.innerHTML='<td>'+file+'</td><td>'+esc(r.title)+'</td><td>'+upd+'</td><td><span class="cpill" style="background:'+st.bg+';color:'+st.fg+'">'+esc(r.status)+'</span></td>';
+  return tr;
+}
+function curatedEditRow(r){
+  var tr=document.createElement("tr"); tr.setAttribute("data-title",r.title);
+  var upStates=CUR_UPDATES.map(function(s){return '<option'+(s===r.updateState?" selected":"")+'>'+s+'</option>';}).join("");
+  var stOpts=CUR_STATUSES.map(function(s){return '<option'+(s===r.status?" selected":"")+'>'+s+'</option>';}).join("");
+  tr.innerHTML='<td><input class="cin ci-file" value="'+esc(r.fileUrl)+'" placeholder="File URL"></td>'+
+    '<td><input class="cin ci-title" value="'+esc(r.title)+'"></td>'+
+    '<td><div style="display:flex;gap:5px"><input class="cin ci-year" value="'+esc(r.year)+'" placeholder="2026" style="width:64px"><select class="cselect ci-state">'+upStates+'</select></div></td>'+
+    '<td><select class="cselect ci-status">'+stOpts+'</select></td>'+
+    '<td><div style="display:flex;gap:5px"><button class="btn red sm cr-save"><i class="ti ti-check"></i></button><button class="btn danger sm cr-del"><i class="ti ti-trash"></i></button></div></td>';
+  tr.querySelector(".cr-save").addEventListener("click",function(){
+    curatedWrite({action:"saveCurated",pin:PIN,oldTitle:r.title,fileUrl:tr.querySelector(".ci-file").value.trim(),title:tr.querySelector(".ci-title").value.trim()||"Untitled",year:tr.querySelector(".ci-year").value.trim(),updateState:tr.querySelector(".ci-state").value,status:tr.querySelector(".ci-status").value},"Saved.");
+  });
+  tr.querySelector(".cr-del").addEventListener("click",function(){ if(confirm('Remove "'+r.title+'"?')) curatedWrite({action:"deleteCurated",pin:PIN,oldTitle:r.title},"Removed."); });
+  return tr;
+}
+function curatedWrite(payload,msg){
+  apiPost(payload).then(function(res){ if(res&&res.ok){STATE=res;render();banner(msg,"ok");} else banner((res&&res.error)||"Not saved.","err"); }).catch(function(){banner("Network error.","err");});
 }
 
 document.getElementById("burger").addEventListener("click",function(){document.getElementById("layout").classList.toggle("closed");});
